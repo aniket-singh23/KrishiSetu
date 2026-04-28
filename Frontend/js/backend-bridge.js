@@ -10,19 +10,20 @@
         tokenStorage.setItem('authToken', token);
         tokenStorage.setItem('authRole', user?.role || 'user');
 
-        if (user?.name) localStorage.setItem('userName', user.name);
-        if (Number.isFinite(user?.level)) localStorage.setItem('userLevel', String(user.level));
-        if (Number.isFinite(user?.xp)) localStorage.setItem('userXP', String(user.xp));
-        if (Number.isFinite(user?.coins)) localStorage.setItem('greenCoins', String(user.coins));
+        // Fix: Only store user data in the same storage as token
+        if (user?.name) tokenStorage.setItem('userName', user.name);
+        if (Number.isFinite(user?.level)) tokenStorage.setItem('userLevel', String(user.level));
+        if (Number.isFinite(user?.xp)) tokenStorage.setItem('userXP', String(user.xp));
+        if (Number.isFinite(user?.coins)) tokenStorage.setItem('greenCoins', String(user.coins));
 
         if (user?.gameStats) {
             const stats = user.gameStats;
-            if (Number.isFinite(stats.gamesPlayed)) localStorage.setItem('gamesPlayed', String(stats.gamesPlayed));
-            if (Number.isFinite(stats.totalScore)) localStorage.setItem('totalGameScore', String(Math.round(stats.totalScore)));
-            if (Number.isFinite(stats.winStreak)) localStorage.setItem('winStreak', String(stats.winStreak));
-            if (Number.isFinite(stats.gameAccuracy)) localStorage.setItem('gameAccuracy', String(Math.round(stats.gameAccuracy)));
-            if (Number.isFinite(stats.virtualFarmeryScore)) localStorage.setItem('virtualFarmeryScore', String(Math.round(stats.virtualFarmeryScore)));
-            if (Number.isFinite(stats.pickOddOutScore)) localStorage.setItem('pickOddOutScore', String(Math.round(stats.pickOddOutScore)));
+            if (Number.isFinite(stats.gamesPlayed)) tokenStorage.setItem('gamesPlayed', String(stats.gamesPlayed));
+            if (Number.isFinite(stats.totalScore)) tokenStorage.setItem('totalGameScore', String(Math.round(stats.totalScore)));
+            if (Number.isFinite(stats.winStreak)) tokenStorage.setItem('winStreak', String(stats.winStreak));
+            if (Number.isFinite(stats.gameAccuracy)) tokenStorage.setItem('gameAccuracy', String(Math.round(stats.gameAccuracy)));
+            if (Number.isFinite(stats.virtualFarmeryScore)) tokenStorage.setItem('virtualFarmeryScore', String(Math.round(stats.virtualFarmeryScore)));
+            if (Number.isFinite(stats.pickOddOutScore)) tokenStorage.setItem('pickOddOutScore', String(Math.round(stats.pickOddOutScore)));
         }
     }
 
@@ -41,25 +42,40 @@
             headers.Authorization = `Bearer ${token}`;
         }
 
-        const response = await fetch(`${AUTH_API_BASE}${path}`, {
-            ...options,
-            headers
-        });
+        // Add request timeout (30 seconds)
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-        let data = {};
         try {
-            data = await response.json();
-        } catch {
-            data = {};
-        }
+            const response = await fetch(`${AUTH_API_BASE}${path}`, {
+                ...options,
+                headers,
+                signal: controller.signal
+            });
 
-        if (!response.ok) {
-            const error = new Error(data.message || 'Request failed');
-            error.status = response.status;
+            clearTimeout(timeoutId);
+
+            let data = {};
+            try {
+                data = await response.json();
+            } catch {
+                data = {};
+            }
+
+            if (!response.ok) {
+                const error = new Error(data.message || 'Request failed');
+                error.status = response.status;
+                throw error;
+            }
+
+            return data;
+        } catch (error) {
+            clearTimeout(timeoutId);
+            if (error.name === 'AbortError') {
+                throw new Error('Request timeout - server not responding');
+            }
             throw error;
         }
-
-        return data;
     }
 
     async function fetchCurrentUser() {
@@ -92,12 +108,28 @@
 
         const token = getToken();
         if (requiresAuth && !token) {
-            windowObj.location.href = config?.redirectTo || 'auth.html';
+            // Prevent page rendering before redirect
+            document.body.style.visibility = 'hidden';
+            setTimeout(() => {
+                windowObj.location.href = config?.redirectTo || 'auth.html';
+            }, 100);
             return false;
         }
 
         if (requiredRole) {
             const role = localStorage.getItem('authRole') || sessionStorage.getItem('authRole') || 'user';
+            if (role !== requiredRole) {
+                document.body.style.visibility = 'hidden';
+                setTimeout(() => {
+                    windowObj.location.href = config?.redirectTo || 'auth.html';
+                }, 100);
+                return false;
+            }
+        }
+
+        document.body.style.visibility = 'visible';
+        return true;
+    }
             if (role !== requiredRole) {
                 windowObj.location.href = config?.redirectTo || 'dashboard.html';
                 return false;

@@ -5,10 +5,11 @@ class DailyQuestManager {
 		this.questProgress = 0;
 		this.uploadedPhoto = null;
 		this.photoLocation = null;
+		// Fixed: Fetch actual user stats from localStorage (synced from backend)
 		this.userStats = {
-			streak: 7,
-			xp: 280,
-			level: 5
+			streak: Number(localStorage.getItem('winStreak')) || 0,
+			xp: Number(localStorage.getItem('userXP')) || 0,
+			level: Number(localStorage.getItem('userLevel')) || 1
 		};
 
 		this.translations = {

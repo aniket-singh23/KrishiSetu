@@ -7,6 +7,26 @@ const fs = require('fs/promises');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
+// ===== RATE LIMITING =====
+const rateLimit = {};
+function checkRateLimit(key, maxRequests = 10, windowMs = 60000) {
+    const now = Date.now();
+    if (!rateLimit[key]) rateLimit[key] = [];
+    rateLimit[key] = rateLimit[key].filter(t => now - t < windowMs);
+    if (rateLimit[key].length >= maxRequests) return false;
+    rateLimit[key].push(now);
+    return true;
+}
+
+// ===== INPUT SANITIZATION =====
+function sanitizeInput(str) {
+    if (typeof str !== 'string') return '';
+    return str.replace(/[<>\"'&]/g, char => {
+        const map = { '<': '&lt;', '>': '&gt;', '\"': '&quot;', \"'\": '&#x27;', '&': '&amp;' };
+        return map[char];
+    });
+}
+
 const app = express();
 const port = Number(process.env.PORT || 3001);
 const jwtSecret = process.env.JWT_SECRET || 'dev-only-change-this-secret';
@@ -159,6 +179,12 @@ app.get('/api/auth/check-email', async (req, res) => {
 });
 
 app.post('/api/auth/register', async (req, res) => {
+    // Rate limit registration attempts (5 per hour per IP)
+    const clientIp = req.ip || req.connection.remoteAddress || 'unknown';
+    if (!checkRateLimit(`register:${clientIp}`, 5, 3600000)) {
+        return res.status(429).json({ message: 'Too many registration attempts. Try again later.' });
+    }
+
     try {
         const validationMessage = validateRegistrationInput(req.body || {});
         if (validationMessage) {
@@ -211,6 +237,12 @@ app.post('/api/auth/register', async (req, res) => {
 });
 
 app.post('/api/auth/login', async (req, res) => {
+    // Rate limit login attempts (10 per minute per IP)
+    const clientIp = req.ip || req.connection.remoteAddress || 'unknown';
+    if (!checkRateLimit(`login:${clientIp}`, 10, 60000)) {
+        return res.status(429).json({ message: 'Too many login attempts. Try again in 1 minute.' });
+    }
+
     try {
         const identifier = normalize(req.body.identifier);
         const password = normalize(req.body.password);
@@ -312,13 +344,14 @@ app.post('/api/stats/game', requireAuth, async (req, res) => {
         return res.status(403).json({ message: 'Admin account cannot submit gameplay stats' });
     }
 
-    const game = normalize(req.body.game).toLowerCase();
-    const score = Number(req.body.score || 0);
-    const accuracy = Number(req.body.accuracy || 0);
+    // Validate and sanitize game stats input
+    const game = sanitizeInput(normalize(req.body.game).toLowerCase());
+    const score = Math.max(0, Math.min(Number(req.body.score || 0), 999999));
+    const accuracy = Math.max(0, Math.min(Number(req.body.accuracy || 0), 100));
     const completed = Boolean(req.body.completed);
     const won = Boolean(req.body.won);
 
-    if (!game) {
+    if (!game || game.length === 0) {
         return res.status(400).json({ message: 'game is required' });
     }
 
@@ -335,8 +368,10 @@ app.post('/api/stats/game', requireAuth, async (req, res) => {
     stats.totalScore += Math.max(0, score);
 
     if (accuracy > 0) {
-        const previousRuns = Math.max(1, stats.gamesPlayed - 1);
-        stats.gameAccuracy = ((stats.gameAccuracy * previousRuns) + accuracy) / stats.gamesPlayed;
+        // Fixed: Correctly calculate running average based on previous game count
+        const gamesBeforeThis = stats.gamesPlayed - 1;
+        const totalAccuracy = (stats.gameAccuracy * Math.max(0, gamesBeforeThis)) + accuracy;
+        stats.gameAccuracy = totalAccuracy / stats.gamesPlayed;
     }
 
     if (won) {
@@ -360,6 +395,76 @@ app.post('/api/stats/game', requireAuth, async (req, res) => {
         message: 'Game stats updated',
         gameStats: stats
     });
+});
+
+// ===== LOGOUT ENDPOINT =====
+app.post('/api/auth/logout', requireAuth, (req, res) => {
+    // Token invalidation is client-side; server acknowledges logout
+    return res.json({ message: 'Logged out successfully' });
+});
+
+// ===== UPDATE USER PROFILE ENDPOINT =====
+app.put('/api/user/profile', requireAuth, async (req, res) => {
+    if (String(req.auth.sub || '').startsWith('admin:')) {
+        return res.status(403).json({ message: 'Admin account cannot update profile' });
+    }
+
+    const allowedFields = ['farmSize', 'farmingType', 'experienceLevel', 'notifications'];
+    const updates = {};
+    for (const field of allowedFields) {
+        if (field in req.body) {
+            updates[field] = field === 'notifications' ? req.body[field] : sanitizeInput(String(req.body[field]).trim());
+        }
+    }
+
+    const users = await readUsers();
+    const userIndex = users.findIndex(u => u.id === req.auth.sub);
+    if (userIndex === -1) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+
+    Object.assign(users[userIndex], updates);
+    await writeUsers(users);
+    return res.json({ user: sanitizeUser(users[userIndex]) });
+});
+
+// ===== ADMIN STATS ENDPOINT =====
+app.get('/api/admin/users', requireAuth, async (req, res) => {
+    if (String(req.auth.sub || '').startsWith('admin:') !== true) {
+        return res.status(403).json({ message: 'Admin access required' });
+    }
+
+    const users = await readUsers();
+    const stats = {
+        totalUsers: users.length,
+        users: users.map(u => ({
+            id: u.id,
+            name: u.name,
+            email: u.email,
+            level: u.level,
+            xp: u.xp,
+            coins: u.coins,
+            gameStats: u.gameStats,
+            createdAt: u.createdAt
+        }))
+    };
+    return res.json(stats);
+});
+
+// ===== ADMIN DELETE USER ENDPOINT =====
+app.delete('/api/admin/users/:userId', requireAuth, async (req, res) => {
+    if (String(req.auth.sub || '').startsWith('admin:') !== true) {
+        return res.status(403).json({ message: 'Admin access required' });
+    }
+
+    const userId = sanitizeInput(req.params.userId);
+    const users = await readUsers();
+    const filtered = users.filter(u => u.id !== userId);
+    if (filtered.length === users.length) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+    await writeUsers(filtered);
+    return res.json({ message: 'User deleted' });
 });
 
 ensureUsersFile()

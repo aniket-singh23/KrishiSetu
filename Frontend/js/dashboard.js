@@ -71,7 +71,7 @@ class SustainableFarmingDashboard {
                     gamesPlayed: Number.isFinite(user.gameStats.gamesPlayed) ? user.gameStats.gamesPlayed : this.gameStats.gamesPlayed,
                     totalScore: Number.isFinite(user.gameStats.totalScore) ? Math.round(user.gameStats.totalScore) : this.gameStats.totalScore,
                     winStreak: Number.isFinite(user.gameStats.winStreak) ? user.gameStats.winStreak : this.gameStats.winStreak,
-                    accuracy: Number.isFinite(user.gameStats.gameAccuracy) ? Math.round(user.gameStats.gameAccuracy) : this.gameStats.accuracy,
+                    gameAccuracy: Number.isFinite(user.gameStats.gameAccuracy) ? Math.round(user.gameStats.gameAccuracy) : this.gameStats.gameAccuracy,
                     virtualFarmeryHighScore: Number.isFinite(user.gameStats.virtualFarmeryScore) ? Math.round(user.gameStats.virtualFarmeryScore) : this.gameStats.virtualFarmeryHighScore,
                     pickOddOutHighScore: Number.isFinite(user.gameStats.pickOddOutScore) ? Math.round(user.gameStats.pickOddOutScore) : this.gameStats.pickOddOutHighScore
                 };
