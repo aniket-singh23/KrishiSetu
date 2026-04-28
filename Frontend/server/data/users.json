@@ -1,0 +1,33 @@
+[
+  {
+    "id": "f163e5b8-55f1-494b-a213-d64f0883b547",
+    "firstName": "Smoke",
+    "lastName": "Test",
+    "name": "Smoke Test",
+    "email": "smoke.1776407716915@example.com",
+    "phone": "999177640771691",
+    "dateOfBirth": null,
+    "farmSize": "small",
+    "farmingType": "mixed",
+    "country": "India",
+    "experienceLevel": "beginner",
+    "notifications": [
+      "email"
+    ],
+    "level": 1,
+    "xp": 0,
+    "coins": 0,
+    "gameStats": {
+      "gamesPlayed": 1,
+      "totalScore": 120,
+      "winStreak": 1,
+      "gameAccuracy": 80,
+      "virtualFarmeryScore": 0,
+      "pickOddOutScore": 120,
+      "dailyQuestCompleted": 0
+    },
+    "role": "user",
+    "createdAt": "2026-04-17T06:35:17.185Z",
+    "passwordHash": "$2a$12$e8HQ/nPGQvDsaHtMvZ35s.KiVSlm8otjOQ4N203D5KCj4mpYy/81u"
+  }
+]

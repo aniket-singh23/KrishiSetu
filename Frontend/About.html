@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@300;400;500;600;700&family=Noto+Sans+Tamil:wght@300;400;500;600;700&family=Noto+Sans+Malayalam:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #22c55e;
+            --secondary-blue: #3b82f6;
+            --accent-orange: #f59e0b;
+            --success-green: #10b981;
+            --warning-yellow: #eab308;
+            --error-red: #ef4444;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--gray-700);
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            min-height: 100vh;
+        }
+
+        /* Language-specific fonts */
+        .lang-hi { font-family: 'Noto Sans Devanagari', 'Inter', sans-serif; }
+        .lang-ta { font-family: 'Noto Sans Tamil', 'Inter', sans-serif; }
+        .lang-ml { font-family: 'Noto Sans Malayalam', 'Inter', sans-serif; }
+        .lang-te { font-family: 'Noto Sans Telugu', 'Inter', sans-serif; }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            text-decoration: none;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary-green);
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--success-green);
+            transform: translateY(-2px);
+        }
+
+        .language-selector {
+            position: relative;
+        }
+
+        .language-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gray-100);
+            border: 2px solid var(--gray-200);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            min-width: 150px;
+            z-index: 1000;
+            display: none;
+            margin-top: 8px;
+        }
+
+        .language-dropdown.active {
+            display: block;
+        }
+
+        .language-option {
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .language-option:hover {
+            background: var(--gray-50);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, var(--primary-green), var(--success-green));
+            color: white;
+            border-radius: 20px;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-icons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 3rem;
+        }
+
+        /* Mission Section */
+        .mission-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+            align-items: center;
+        }
+
+        .mission-content h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 1.5rem;
+        }
+
+        .mission-content p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--gray-600);
+        }
+
+        .mission-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-green);
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .mission-image {
+            background: linear-gradient(135deg, var(--success-green), var(--primary-green));
+            border-radius: 20px;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            color: white;
+            min-height: 400px;
+        }
+
+        /* Features Section */
+        .features-section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.3s;
+            border-left: 4px solid var(--primary-green);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-green), var(--success-green));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: var(--gray-600);
+        }
+
+        /* Team Section */
+        .team-section {
+            background: var(--white);
+            padding: 4rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 4rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 16px;
+            background: var(--gray-50);
+            transition: all 0.3s;
+        }
+
+        .team-member:hover {
+            background: var(--gray-100);
+            transform: translateY(-4px);
+        }
+
+        .member-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary-green), var(--success-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            margin: 0 auto 1.5rem;
+        }
+
+        .member-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .member-role {
+            color: var(--primary-green);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .member-description {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        /* Values Section */
+        .values-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .value-card {
+            background: linear-gradient(135deg, var(--secondary-blue), #2563eb);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .value-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+        }
+
+        .value-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .value-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .value-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--accent-orange), #d97706);
+            color: white;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 12px 24px;
+            border: 2px solid white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .cta-btn.primary {
+            background: white;
+            color: var(--accent-orange);
+        }
+
+        .cta-btn.secondary {
+            background: transparent;
+            color: white;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--gray-800);
+            color: var(--gray-300);
+            text-align: center;
+            padding: 2rem;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-link {
+            color: var(--gray-300);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-link:hover {
+            color: var(--primary-green);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .mission-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .mission-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .values-section {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-section, .mission-section, .features-section, .team-section {
+            animation: fadeInUp 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <i class="fas fa-leaf"></i>
+                <span data-translate="platform-name">Krishi setu</span>
+            </a>
+
+            <div class="nav-actions">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-home"></i>
+                    <span data-translate="back-home">Back to Home</span>
+                </a>
+
+                <div class="language-selector">
+                    <button class="language-btn" id="languageBtn">
+                        <i class="fas fa-globe"></i>
+                        <span id="currentLang">EN</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="language-dropdown" id="languageDropdown">
+                        <div class="language-option" data-lang="en">🇺🇸 English</div>
+                        <div class="language-option" data-lang="hi">🇮🇳 हिन्दी</div>
+                        <div class="language-option" data-lang="ml">🇮🇳 മലയാളം</div>
+                        <div class="language-option" data-lang="te">🇮🇳 తెలుగు</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title" data-translate="about-title">🌾 Growing a Sustainable Future</h1>
+                <p class="hero-subtitle" data-translate="about-subtitle">Empowering farmers across Kerala with technology, knowledge, and community support</p>
+                <div class="hero-icons">
+                    <span>🌱</span>
+                    <span>🚜</span>
+                    <span>🌿</span>
+                    <span>🏡</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission Section -->
+        <section class="mission-section">
+            <div class="mission-content">
+                <h2 data-translate="our-mission">Our Mission</h2>
+                <p data-translate="mission-text-1">
+                    We believe that sustainable farming is the key to feeding our growing population while protecting our planet. Our platform connects farmers with the tools, knowledge, and community they need to thrive in the 21st century.
+                </p>
+                <p data-translate="mission-text-2">
+                    From traditional wisdom to cutting-edge technology, we're bridging the gap between heritage and innovation to create a more sustainable agricultural future for Kerala and beyond.
+                </p>
+                
+                <div class="mission-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">1,247</div>
+                        <div class="stat-label" data-translate="active-farmers">Active Farmers</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">14</div>
+                        <div class="stat-label" data-translate="districts-covered">Districts Covered</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">8,934</div>
+                        <div class="stat-label" data-translate="quests-completed">Quests Completed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">523</div>
+                        <div class="stat-label" data-translate="sustainable-farms">Sustainable Farms</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mission-image">
+                🌾
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <h2 class="section-title" data-translate="what-we-offer">What We Offer</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3 class="feature-title" data-translate="daily-quests">Daily Quests</h3>
+                    <p class="feature-description" data-translate="quests-desc">
+                        Personalized farming tasks that help you learn sustainable practices while earning rewards and building streaks.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 class="feature-title" data-translate="interactive-games">Interactive Games</h3>
+                    <p class="feature-description" data-translate="games-desc">
+                        Learn through play with our Virtual Farmery game that teaches real farming principles in an engaging way.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title" data-translate="community">Community</h3>
+                    <p class="feature-description" data-translate="community-desc">
+                        Connect with fellow farmers, share experiences, and learn from each other's successes and challenges.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title" data-translate="progress-tracking">Progress Tracking</h3>
+                    <p class="feature-description" data-translate="tracking-desc">
+                        Monitor your farming journey with detailed analytics, achievements, and personalized insights.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3 class="feature-title" data-translate="multilingual">Multilingual Support</h3>
+                    <p class="feature-description" data-translate="multilingual-desc">
+                        Available in English, Hindi, Malayalam, and Telugu to serve farmers across different regions.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-title" data-translate="mobile-first">Mobile First</h3>
+                    <p class="feature-description" data-translate="mobile-desc">
+                        Designed for smartphones with offline capabilities, ensuring access even in remote farming areas.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Values Section -->
+        <section class="values-section">
+            <div class="value-card">
+                <div class="value-content">
+                    <div class="value-icon">🌱</div>
+                    <h3 class="value-title" data-translate="sustainability">Sustainability</h3>
+                    <p data-translate="sustainability-desc">
+                        Every feature promotes environmentally conscious farming practices for long-term agricultural health.
+                    </p>
+                </div>
+            </div>
+
+            <div class="value-card">
+                <div class="value-content">
+                    <div class="value-icon">🤝</div>
+                    <h3 class="value-title" data-translate="accessibility">Accessibility</h3>
+                    <p data-translate="accessibility-desc">
+                        Technology should be available to everyone, regardless of location, language, or technical expertise.
+                    </p>
+                </div>
+            </div>
+
+            <div class="value-card">
+                <div class="value-content">
+                    <div class="value-icon">🎓</div>
+                    <h3 class="value-title" data-translate="education">Education</h3>
+                    <p data-translate="education-desc">
+                        Continuous learning through gamification makes acquiring new farming skills engaging and effective.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="team-section">
+            <h2 class="section-title" data-translate="our-team">Our Team</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-avatar">👨‍💻</div>
+                    <h3 class="member-name">Development Team</h3>
+                    <p class="member-role" data-translate="tech-experts">Technology Experts</p>
+                    <p class="member-description" data-translate="dev-team-desc">
+                        Building scalable, user-friendly solutions that make sustainable farming accessible to everyone.
+                    </p>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-avatar">👩‍🌾</div>
+                    <h3 class="member-name">Agricultural Advisors</h3>
+                    <p class="member-role" data-translate="farming-experts">Farming Experts</p>
+                    <p class="member-description" data-translate="agri-team-desc">
+                        Experienced farmers and agronomists ensuring our content reflects real-world best practices.
+                    </p>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-avatar">🎨</div>
+                    <h3 class="member-name">Design Team</h3>
+                    <p class="member-role" data-translate="ux-designers">UX Designers</p>
+                    <p class="member-description" data-translate="design-team-desc">
+                        Creating intuitive, beautiful interfaces that make complex farming concepts easy to understand.
+                    </p>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-avatar">🌍</div>
+                    <h3 class="member-name">Community Managers</h3>
+                    <p class="member-role" data-translate="community-leaders">Community Leaders</p>
+                    <p class="member-description" data-translate="community-team-desc">
+                        Fostering connections between farmers and ensuring everyone feels supported on their journey.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <h2 class="cta-title" data-translate="join-movement">Join the Movement</h2>
+            <p class="cta-description" data-translate="cta-description">
+                Ready to be part of the sustainable farming revolution? Start your journey today and help build a greener tomorrow.
+            </p>
+            <div class="cta-buttons">
+                <a href="signup.html" class="cta-btn primary" data-translate="get-started">Get Started</a>
+                <a href="contact.html" class="cta-btn secondary" data-translate="contact-us">Contact Us</a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html" class="footer-link" data-translate="home">Home</a>
+                <a href="about.html" class="footer-link" data-translate="about">About</a>
+                <a href="contact.html" class="footer-link" data-translate="contact">Contact</a>
+                <a href="privacy.html" class="footer-link" data-translate="privacy">Privacy</a>
+                <a href="terms.html" class="footer-link" data-translate="terms">Terms</a>
+            </div>
+            <p data-translate="copyright">&copy; 2025 Sustainable Farming Platform. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Multi-language Support
+        const translations = {
+            en: {
+                'platform-name': 'Sustainable Farming',
+                'back-home': 'Back to Home',
+                'about-title': '🌾 Growing a Sustainable Future',
+                'about-subtitle': 'Empowering farmers across Kerala with technology, knowledge, and community support',
+                'our-mission': 'Our Mission',
+                'mission-text-1': 'We believe that sustainable farming is the key to feeding our growing population while protecting our planet. Our platform connects farmers with the tools, knowledge, and community they need to thrive in the 21st century.',
+                'mission-text-2': 'From traditional wisdom to cutting-edge technology, we\'re bridging the gap between heritage and innovation to create a more sustainable agricultural future for Kerala and beyond.',
+                'active-farmers': 'Active Farmers',
+                'districts-covered': 'Districts Covered',
+                'quests-completed': 'Quests Completed',
+                'sustainable-farms': 'Sustainable Farms',
+                'what-we-offer': 'What We Offer',
+                'daily-quests': 'Daily Quests',
+                'quests-desc': 'Personalized farming tasks that help you learn sustainable practices while earning rewards and building streaks.',
+                'interactive-games': 'Interactive Games',
+                'games-desc': 'Learn through play with our Virtual Farmery game that teaches real farming principles in an engaging way.',
+                'community': 'Community',
+                'community-desc': 'Connect with fellow farmers, share experiences, and learn from each other\'s successes and challenges.',
+                'progress-tracking': 'Progress Tracking',
+                'tracking-desc': 'Monitor your farming journey with detailed analytics, achievements, and personalized insights.',
+                'multilingual': 'Multilingual Support',
+                'multilingual-desc': 'Available in English, Hindi, Malayalam, and Telugu to serve farmers across different regions.',
+                'mobile-first': 'Mobile First',
+                'mobile-desc': 'Designed for smartphones with offline capabilities, ensuring access even in remote farming areas.',
+                'sustainability': 'Sustainability',
+                'sustainability-desc': 'Every feature promotes environmentally conscious farming practices for long-term agricultural health.',
+                'accessibility': 'Accessibility',
+                'accessibility-desc': 'Technology should be available to everyone, regardless of location, language, or technical expertise.',
+                'education': 'Education',
+                'education-desc': 'Continuous learning through gamification makes acquiring new farming skills engaging and effective.',
+                'our-team': 'Our Team',
+                'tech-experts': 'Technology Experts',
+                'dev-team-desc': 'Building scalable, user-friendly solutions that make sustainable farming accessible to everyone.',
+                'farming-experts': 'Farming Experts',
+                'agri-team-desc': 'Experienced farmers and agronomists ensuring our content reflects real-world best practices.',
+                'ux-designers': 'UX Designers',
+                'design-team-desc': 'Creating intuitive, beautiful interfaces that make complex farming concepts easy to understand.',
+                'community-leaders': 'Community Leaders',
+                'community-team-desc': 'Fostering connections between farmers and ensuring everyone feels supported on their journey.',
+                'join-movement': 'Join the Movement',
+                'cta-description': 'Ready to be part of the sustainable farming revolution? Start your journey today and help build a greener tomorrow.',
+                'get-started': 'Get Started',
+                'contact-us': 'Contact Us',
+                'home': 'Home',
+                'about': 'About',
+                'contact': 'Contact',
+                'privacy': 'Privacy',
+                'terms': 'Terms',
+                'copyright': '© 2025 Sustainable Farming Platform. All rights reserved.'
+            },
+            hi: {
+                'platform-name': 'स्थायी कृषि',
+                'back-home': 'होम पर वापस जाएं',
+                'about-title': '🌾 एक स्थायी भविष्य का निर्माण',
+                'about-subtitle': 'प्रौद्योगिकी, ज्ञान और सामुदायिक समर्थन के साथ केरल भर के किसानों को सशक्त बनाना',
+                'our-mission': 'हमारा मिशन',
+                'mission-text-1': 'हम मानते हैं कि स्थायी कृषि हमारी बढ़ती जनसंख्या को भोजन देने और हमारे ग्रह की रक्षा करने की कुंजी है।',
+                'mission-text-2': 'पारंपरिक ज्ञान से लेकर अत्याधुनिक तकनीक तक, हम केरल और उसके बाहर एक अधिक टिकाऊ कृषि भविष्य बनाने के लिए विरासत और नवाचार के बीच की खाई को पाट रहे हैं।',
+                'active-farmers': 'सक्रिय किसान',
+                'districts-covered': 'कवर किए गए जिले',
+                'quests-completed': 'पूरी की गई चुनौतियां',
+                'sustainable-farms': 'टिकाऊ खेत',
+                'what-we-offer': 'हम क्या प्रदान करते हैं',
+                'daily-quests': 'दैनिक चुनौतियां',
+                'quests-desc': 'व्यक्तिगत कृषि कार्य जो आपको पुरस्कार अर्जित करते हुए टिकाऊ प्रथाओं को सीखने में मदद करते हैं।',
+                'interactive-games': 'इंटरैक्टिव गेम्स',
+                'games-desc': 'हमारे वर्चुअल फार्मरी गेम के साथ खेलकर सीखें जो वास्तविक कृषि सिद्धांतों को रोचक तरीके से सिखाता है।',
+                'community': 'समुदाय',
+                'community-desc': 'साथी किसानों से जुड़ें, अनुभव साझा करें, और एक-दूसरे की सफलताओं और चुनौतियों से सीखें।',
+                'join-movement': 'आंदोलन में शामिल हों',
+                'get-started': 'शुरू करें',
+                'contact-us': 'संपर्क करें'
+            },
+            ml: {
+                'platform-name': 'സുസ്ഥിര കൃഷി',
+                'back-home': 'ഹോമിലേക്ക് മടങ്ങുക',
+                'about-title': '🌾 സുസ്ഥിര ഭാവി വളർത്തുന്നു',
+                'about-subtitle': 'സാങ്കേതികവിദ്യ, അറിവ്, സാമുദായിക പിന്തുണ എന്നിവയിലൂടെ കേരളത്തിലുടനീളമുള്ള കർഷകരെ ശാക്തീകരിക്കുന്നു',
+                'our-mission': 'ഞങ്ങളുടെ ലക്ഷ്യം',
+                'mission-text-1': 'നമ്മുടെ വർദ്ധിച്ചുവരുന്ന ജനസംഖ്യയെ പോറ്റുന്നതിനും നമ്മുടെ ഗ്രഹത്തെ സംരക്ഷിക്കുന്നതിനുമുള്ള താക്കോൽ സുസ്ഥിര കൃഷിയാണെന്ന് ഞങ്ങൾ വിശ്വസിക്കുന്നു।',
+                'active-farmers': 'സജീവ കർഷകർ',
+                'districts-covered': 'ഉൾപ്പെടുത്തിയ ജില്ലകൾ',
+                'quests-completed': 'പൂർത്തിയാക്കിയ ദൗത്യങ്ങൾ',
+                'sustainable-farms': 'സുസ്ഥിര കൃഷിയിടങ്ങൾ',
+                'what-we-offer': 'ഞങ്ങൾ എന്താണ് നൽകുന്നത്',
+                'join-movement': 'പ്രസ്ഥാനത്തിൽ ചേരുക',
+                'get-started': 'ആരംഭിക്കുക',
+                'contact-us': 'ബന്ധപ്പെടുക'
+            },
+            te: {
+                'platform-name': 'స్థిరమైన వ్యవసాయం',
+                'back-home': 'ఇంటికి తిరిగి వెళ్ళు',
+                'about-title': '🌾 స్థిరమైన భవిష్యత్తును పెంపొందించడం',
+                'about-subtitle': 'సాంకేతికత, జ్ఞానం మరియు సమాజ మద్దతుతో కేరళ అంతటా రైతులను శక్తివంతం చేస్తోంది',
+                'our-mission': 'మా లక్ష్యం',
+                'mission-text-1': 'మన పెరుగుతున్న జనాభాకు ఆహారం అందించడంలో మరియు మన గ్రహాన్ని రక్షించడంలో స్థిరమైన వ్యవసాయం కీలకమని మేము నమ్ముతున్నాము।',
+                'active-farmers': 'చురుకైన రైతులు',
+                'districts-covered': 'కవర్ చేసిన జిల్లాలు',
+                'quests-completed': 'పూర్తయిన అన్వేషణలు',
+                'sustainable-farms': 'స్థిరమైన వ్యవసాయ క్షేత్రాలు',
+                'what-we-offer': 'మేము ఏమి అందిస్తాము',
+                'join-movement': 'ఉద్యమంలో చేరండి',
+                'get-started': 'ప్రారంభించండి',
+                'contact-us': 'మమ్మల్ని సంప్రదించండి'
+            }
+        };
+
+        // Language Management
+        class AboutPageManager {
+            constructor() {
+                this.currentLanguage = localStorage.getItem('aboutLanguage') || 'en';
+                this.setupEventListeners();
+                this.setupLanguage();
+            }
+
+            setupLanguage() {
+                this.updateLanguageDisplay();
+                this.applyTranslations();
+            }
+
+            updateLanguageDisplay() {
+                const langCodes = { en: 'EN', hi: 'HI', ml: 'ML', te: 'TE' };
+                document.getElementById('currentLang').textContent = langCodes[this.currentLanguage];
+            }
+
+            applyTranslations() {
+                const currentTranslations = translations[this.currentLanguage] || translations.en;
+                document.querySelectorAll('[data-translate]').forEach(element => {
+                    const key = element.dataset.translate;
+                    if (currentTranslations[key]) {
+                        element.innerHTML = currentTranslations[key];
+                    }
+                });
+            }
+
+            changeLanguage(lang) {
+                this.currentLanguage = lang;
+                localStorage.setItem('aboutLanguage', lang);
+                this.setupLanguage();
+            }
+
+            setupEventListeners() {
+                const languageBtn = document.getElementById('languageBtn');
+                const languageDropdown = document.getElementById('languageDropdown');
+
+                languageBtn?.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    languageDropdown.classList.toggle('active');
+                });
+
+                document.addEventListener('click', () => {
+                    languageDropdown.classList.remove('active');
+                });
+
+                document.querySelectorAll('.language-option').forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        const lang = e.target.dataset.lang;
+                        this.changeLanguage(lang);
+                        languageDropdown.classList.remove('active');
+                    });
+                });
+            }
+        }
+
+        // Initialize About Page
+        document.addEventListener('DOMContentLoaded', () => {
+            new AboutPageManager();
+        });
+    </script>
+</body>
+</html>

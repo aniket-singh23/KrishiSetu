@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌱KRISHU SETU</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Clean Modern Header with Background -->
+    <header class="modern-header">
+        <nav class="nav-container">
+            <div class="nav-brand">
+                <div class="logo-container">
+                    <div class="logo-icon">🌱</div>
+                    <div class="brand-text">
+                        <h1>KRISHI SETU</h1>
+                        <span>Transform your farming practices with fun, engaging challenges</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nav-center">
+                <div class="nav-menu">
+                    <a href="#home" class="nav-link active">
+                        <span>Home</span>
+                    </a>
+                    <a href="#features" class="nav-link">
+                        <span>Features</span>
+                    </a>
+                    <a href="auth.html" class="nav-link">
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="About.html" class="nav-link">
+                        <span>About</span>
+                    </a>
+                    <a href="#contact" class="nav-link">
+                        <span>Contact</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="nav-actions">
+                <div class="auth-buttons">
+                    <a href="auth.html" class="login-btn">
+                        Login
+                    </a>
+                    <a href="signup.html" class="signup-btn">
+                        Sign Up
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+        
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-nav-menu">
+            <div class="mobile-nav-content">
+                <a href="#home" class="mobile-nav-link active">
+                    <span>Home</span>
+                </a>
+                <a href="#features" class="mobile-nav-link">
+                    <span>Features</span>
+                </a>
+                <a href="auth.html" class="mobile-nav-link">
+                    <span>Dashboard</span>
+                </a>
+                <a href="About.html" class="mobile-nav-link">
+                    <span>About</span>
+                </a>
+                <a href="#contact" class="mobile-nav-link">
+                    <span>Contact</span>
+                </a>
+                <div class="mobile-nav-divider"></div>
+                <a href="auth.html" class="mobile-nav-link">
+                    <span>Login</span>
+                </a>
+                <a href="signup.html" class="mobile-nav-link">
+                    <span>Sign Up</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section with New Farmer Image -->
+        <section id="home" class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-left">
+                        <div class="hero-badge">
+                            <span class="badge-icon">✨</span>
+                            <span>Transform your farming practices</span>
+                        </div>
+                        
+                        <h1 class="hero-title">
+                            Transform your farming practices with 
+                            <span class="highlight">fun, engaging challenges</span>
+                        </h1>
+                        
+                        <p class="hero-description">
+                            Join thousands of farmers who are revolutionizing agriculture through 
+                            gamified learning, sustainable practices, and community-driven growth.
+                        </p>
+                        
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">10,000+</div>
+                                <div class="stat-label">Active Farmers</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">85%</div>
+                                <div class="stat-label">Success Rate</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">50+</div>
+                                <div class="stat-label">Challenges</div>
+                            </div>
+                        </div>
+                        
+                        <div class="hero-actions">
+                            <button class="btn-primary" onclick="window.location.href='auth.html'">
+                                <span>Get Started</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                            <button class="btn-secondary" onclick="watchDemo()">
+                                <i class="fas fa-play"></i>
+                                <span>Watch Demo</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-right">
+                        <div class="hero-illustration">
+                            <!-- New Farmer Image -->
+                            <div class="farmer-image-container">
+                                <img src="objects/Farmer_pic.webp" alt="Sustainable Farming Illustration" class="main-farmer-image">
+                                
+                                <!-- Enhanced Floating Elements -->
+                                <div class="floating-elements">
+                                    <div class="floating-card achievement-card">
+                                        <div class="card-icon">🏆</div>
+                                        <div class="card-content">
+                                            <div class="card-title">Achievement Unlocked!</div>
+                                            <div class="card-subtitle">Organic Master</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="floating-card level-card">
+                                        <div class="card-icon">⭐</div>
+                                        <div class="card-content">
+                                            <div class="card-title">Level 7</div>
+                                            <div class="card-subtitle">Expert Farmer</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="floating-card points-card">
+                                        <div class="card-icon">💎</div>
+                                        <div class="card-content">
+                                            <div class="card-title">3,500 Points</div>
+                                            <div class="card-subtitle">Keep Growing!</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="floating-card progress-card">
+                                        <div class="card-icon">🌱</div>
+                                        <div class="card-content">
+                                            <div class="card-title">70% Complete</div>
+                                            <div class="progress-bar-mini">
+                                                <div class="progress-fill-mini"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Background Decorative Elements -->
+                                <div class="hero-bg-elements">
+                                    <div class="bg-circle circle-1"></div>
+                                    <div class="bg-circle circle-2"></div>
+                                    <div class="bg-circle circle-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features-section">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge">
+                        <span class="badge-icon">🚀</span>
+                        <span>Features</span>
+                    </div>
+                    <h2 class="section-title">Everything you need to transform your farming</h2>
+                    <p class="section-description">
+                        Our platform combines modern technology with traditional farming wisdom 
+                        to create an engaging learning experience.
+                    </p>
+                </div>
+                
+                <div class="features-grid">
+                    <!-- Feature 1 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3 class="feature-title">Interactive Challenges</h3>
+                        <p class="feature-description">
+                            Complete fun farming challenges that teach sustainable practices 
+                            while earning points and badges.
+                        </p>
+                        <div class="feature-link">
+                            <span>Learn more</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 2 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="feature-title">Progress Tracking</h3>
+                        <p class="feature-description">
+                            Monitor your farming improvements with detailed analytics 
+                            and sustainability metrics.
+                        </p>
+                        <div class="feature-link">
+                            <span>Learn more</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 3 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="feature-title">Community Network</h3>
+                        <p class="feature-description">
+                            Connect with fellow farmers, share experiences, and learn 
+                            from successful sustainable practices.
+                        </p>
+                        <div class="feature-link">
+                            <span>Learn more</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 4 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <h3 class="feature-title">Real Rewards</h3>
+                        <p class="feature-description">
+                            Earn government scheme benefits, training credits, and 
+                            marketplace discounts for your achievements.
+                        </p>
+                        <div class="feature-link">
+                            <span>Learn more</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 5 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="feature-title">Smart Recommendations</h3>
+                        <p class="feature-description">
+                            Get personalized farming advice based on your location, 
+                            crop type, and seasonal requirements.
+                        </p>
+                        <div class="feature-link">
+                            <span>Learn more</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature 6 -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3 class="feature-title">Sustainability Impact</h3>
+                        <p class="feature-description">
+                            Track your environmental impact with detailed metrics on 
+                            water savings, carbon reduction, and soil health.
+                        </p>
+                        <div class="feature-link">
+                            <span>Learn more</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works-section">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge">
+                        <span class="badge-icon">⚡</span>
+                        <span>How It Works</span>
+                    </div>
+                    <h2 class="section-title">Start your sustainable farming journey in 3 steps</h2>
+                </div>
+                
+                <div class="steps-container">
+                    <div class="step-item">
+                        <div class="step-number">01</div>
+                        <div class="step-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h3 class="step-title">Create Your Profile</h3>
+                        <p class="step-description">
+                            Sign up and tell us about your farm, crops, and current practices 
+                            to get personalized recommendations.
+                        </p>
+                    </div>
+                    
+                    <div class="step-item">
+                        <div class="step-number">02</div>
+                        <div class="step-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h3 class="step-title">Complete Challenges</h3>
+                        <p class="step-description">
+                            Take on farming challenges tailored to your needs, learn new 
+                            sustainable techniques, and earn rewards.
+                        </p>
+                    </div>
+                    
+                    <div class="step-item">
+                        <div class="step-number">03</div>
+                        <div class="step-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h3 class="step-title">Track Progress</h3>
+                        <p class="step-description">
+                            Monitor your improvements, celebrate achievements, and unlock 
+                            new opportunities for growth.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials-section">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge">
+                        <span class="badge-icon">💬</span>
+                        <span>Success Stories</span>
+                    </div>
+                    <h2 class="section-title">What farmers are saying</h2>
+                </div>
+                
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"This platform transformed how I approach farming. The challenges 
+                            made learning fun, and I've increased my yield by 30% using sustainable methods."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Rajesh Kumar">
+                            </div>
+                            <div class="author-info">
+                                <div class="author-name">Rajesh Kumar</div>
+                                <div class="author-role">Organic Farmer, Punjab</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"The community aspect is amazing. I've learned so much from other 
+                            farmers and the rewards system motivates me to keep improving."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b494?w=100&h=100&fit=crop&crop=face" alt="Priya Sharma">
+                            </div>
+                            <div class="author-info">
+                                <div class="author-name">Priya Sharma</div>
+                                <div class="author-role">Vegetable Farmer, Maharashtra</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"Easy to use and very helpful. The personalized recommendations 
+                            saved me time and money while improving my farming practices."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="Amit Verma">
+                            </div>
+                            <div class="author-info">
+                                <div class="author-name">Amit Verma</div>
+                                <div class="author-role">Rice Farmer, Haryana</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <div class="cta-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h2 class="cta-title">Ready to transform your farming?</h2>
+                    <p class="cta-description">
+                        Join thousands of farmers already using sustainable practices 
+                        to improve their yields and protect the environment.
+                    </p>
+                    <div class="cta-actions">
+                        <button class="btn-primary large" onclick="window.location.href='auth.html'">
+                            <span>Get Started Today</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="cta-features">
+                        <div class="cta-feature">
+                            <i class="fas fa-check"></i>
+                            <span>Free to start</span>
+                        </div>
+                        <div class="cta-feature">
+                            <i class="fas fa-check"></i>
+                            <span>Real rewards</span>
+                        </div>
+                        <div class="cta-feature">
+                            <i class="fas fa-check"></i>
+                            <span>Expert support</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="modern-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <div class="logo-icon">🌱</div>
+                        <div class="brand-text">
+                            <h3>Sustainable Agriculture</h3>
+                            <p>Transforming farming through innovation</p>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Platform</h4>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="#challenges">Challenges</a></li>
+                        <li><a href="#community">Community</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#guides">Guides</a></li>
+                        <li><a href="#help">Help Center</a></li>
+                        <li><a href="#api">API Docs</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    <p>&copy; 2025 Sustainable Agriculture. All rights reserved.</p>
+                </div>
+                <div class="footer-made-with">
+                    <span>Made with 💚 for farmers</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js" defer></script>
+    <script src="voice-assistant.js" defer></script>
+    
+</body>
+</html>

@@ -1,0 +1,14 @@
+# Node dependencies
+node_modules/
+Frontend/node_modules/
+
+# Local env files
+Frontend/server/.env
+
+# Runtime logs
+*.log
+Frontend/server-smoke*.log
+
+# OS/editor artifacts
+.DS_Store
+Thumbs.db

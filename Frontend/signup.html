@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌱 Sign Up - KRISHU SETU</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/signup.css">
+</head>
+<body class="signup-page">
+    <!-- Header -->
+    <header class="signup-header">
+        <nav class="nav-container">
+            <div class="nav-brand">
+                <a href="index.html" class="logo-container">
+                    <div class="logo-icon">🌱</div>
+                    <div class="brand-text">
+                        <h1>KRISHU SETU</h1>
+                        <span>Join the farming revolution</span>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="nav-actions">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Home</span>
+                </a>
+                <a href="auth.html" class="login-link">
+                    <span>Already have an account?</span>
+                    <strong>Log In</strong>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Signup Container -->
+    <main class="signup-main">
+        <div class="signup-container">
+            <!-- Left Side - Benefits & Info -->
+            <div class="signup-left">
+                <div class="signup-hero">
+                    <div class="hero-content">
+                        <h2>Start Your Sustainable Farming Journey</h2>
+                        <p>Join thousands of farmers who are transforming agriculture through innovative, eco-friendly practices.</p>
+                    </div>
+                    
+                    <div class="signup-benefits">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🎮</div>
+                            <div class="benefit-content">
+                                <h4>Interactive Learning Games</h4>
+                                <p>Master farming techniques through engaging challenges and simulations</p>
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🏆</div>
+                            <div class="benefit-content">
+                                <h4>Achievement System</h4>
+                                <p>Earn badges, unlock levels, and showcase your farming expertise</p>
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">👥</div>
+                            <div class="benefit-content">
+                                <h4>Community Network</h4>
+                                <p>Connect with fellow farmers and share sustainable practices</p>
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">💰</div>
+                            <div class="benefit-content">
+                                <h4>Real Rewards</h4>
+                                <p>Access government schemes, training programs, and marketplace benefits</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="signup-illustration">
+                    <img src="objects/farmer-illustration.png" alt="Join Sustainable Farming" class="signup-farmer-image">
+                    
+                    <div class="floating-stats">
+                        <div class="stat-bubble">
+                            <div class="stat-number">10,000+</div>
+                            <div class="stat-label">Farmers Joined</div>
+                        </div>
+                        <div class="stat-bubble">
+                            <div class="stat-number">85%</div>
+                            <div class="stat-label">Success Rate</div>
+                        </div>
+                        <div class="stat-bubble">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Countries</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side - Signup Form -->
+            <div class="signup-right">
+                <div class="signup-form-container">
+                    <div class="form-header">
+                        <h1>Create Your Account</h1>
+                        <p>Start your journey towards sustainable farming excellence</p>
+                    </div>
+
+                    <!-- Progress Indicator -->
+                    <div class="signup-progress">
+                        <div class="progress-step active">
+                            <div class="step-number">1</div>
+                            <span>Personal Info</span>
+                        </div>
+                        <div class="progress-step">
+                            <div class="step-number">2</div>
+                            <span>Farm Details</span>
+                        </div>
+                        <div class="progress-step">
+                            <div class="step-number">3</div>
+                            <span>Verification</span>
+                        </div>
+                    </div>
+
+                    <!-- Signup Form -->
+                    <form class="signup-form" id="signupForm">
+                        <!-- Step 1: Personal Information -->
+                        <div class="form-step active" id="step-1">
+                            <div class="step-header">
+                                <h3>Personal Information</h3>
+                                <p>Tell us about yourself</p>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <label for="firstName">First Name *</label>
+                                    <div class="input-container">
+                                        <i class="fas fa-user input-icon"></i>
+                                        <input 
+                                            type="text" 
+                                            id="firstName" 
+                                            name="firstName" 
+                                            placeholder="Enter your first name"
+                                            required
+                                        >
+                                        <div class="input-validation">
+                                            <i class="fas fa-check-circle valid-icon"></i>
+                                            <i class="fas fa-exclamation-circle invalid-icon"></i>
+                                        </div>
+                                    </div>
+                                    <span class="error-message" id="firstName-error"></span>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="lastName">Last Name *</label>
+                                    <div class="input-container">
+                                        <i class="fas fa-user input-icon"></i>
+                                        <input 
+                                            type="text" 
+                                            id="lastName" 
+                                            name="lastName" 
+                                            placeholder="Enter your last name"
+                                            required
+                                        >
+                                        <div class="input-validation">
+                                            <i class="fas fa-check-circle valid-icon"></i>
+                                            <i class="fas fa-exclamation-circle invalid-icon"></i>
+                                        </div>
+                                    </div>
+                                    <span class="error-message" id="lastName-error"></span>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="email">Email Address *</label>
+                                <div class="input-container">
+                                    <i class="fas fa-envelope input-icon"></i>
+                                    <input 
+                                        type="email" 
+                                        id="email" 
+                                        name="email" 
+                                        placeholder="Enter your email address"
+                                        required
+                                    >
+                                    <div class="input-validation">
+                                        <i class="fas fa-check-circle valid-icon"></i>
+                                        <i class="fas fa-exclamation-circle invalid-icon"></i>
+                                    </div>
+                                </div>
+                                <span class="error-message" id="email-error"></span>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <label for="phone">Phone Number *</label>
+                                    <div class="input-container">
+                                        <i class="fas fa-phone input-icon"></i>
+                                        <input 
+                                            type="tel" 
+                                            id="phone" 
+                                            name="phone" 
+                                            placeholder="+1 (555) 123-4567"
+                                            required
+                                        >
+                                        <div class="input-validation">
+                                            <i class="fas fa-check-circle valid-icon"></i>
+                                            <i class="fas fa-exclamation-circle invalid-icon"></i>
+                                        </div>
+                                    </div>
+                                    <span class="error-message" id="phone-error"></span>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="dateOfBirth">Date of Birth</label>
+                                    <div class="input-container">
+                                        <i class="fas fa-calendar input-icon"></i>
+                                        <input 
+                                            type="date" 
+                                            id="dateOfBirth" 
+                                            name="dateOfBirth"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <label for="password">Password *</label>
+                                    <div class="input-container">
+                                        <i class="fas fa-lock input-icon"></i>
+                                        <input 
+                                            type="password" 
+                                            id="password" 
+                                            name="password" 
+                                            placeholder="Create a strong password"
+                                            required
+                                        >
+                                        <button type="button" class="password-toggle" data-target="password">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="password-strength">
+                                        <div class="strength-bar">
+                                            <div class="strength-fill"></div>
+                                        </div>
+                                        <span class="strength-text">Password strength</span>
+                                    </div>
+                                    <span class="error-message" id="password-error"></span>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="confirmPassword">Confirm Password *</label>
+                                    <div class="input-container">
+                                        <i class="fas fa-lock input-icon"></i>
+                                        <input 
+                                            type="password" 
+                                            id="confirmPassword" 
+                                            name="confirmPassword" 
+                                            placeholder="Confirm your password"
+                                            required
+                                        >
+                                        <button type="button" class="password-toggle" data-target="confirmPassword">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <span class="error-message" id="confirmPassword-error"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Farm Details -->
+                        <div class="form-step" id="step-2">
+                            <div class="step-header">
+                                <h3>Farm Information</h3>
+                                <p>Tell us about your farming operation</p>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="farmName">Farm Name</label>
+                                <div class="input-container">
+                                    <i class="fas fa-seedling input-icon"></i>
+                                    <input 
+                                        type="text" 
+                                        id="farmName" 
+                                        name="farmName" 
+                                        placeholder="Enter your farm name (optional)"
+                                    >
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <label for="farmSize">Farm Size *</label>
+                                    <div class="input-container">
+                                        <i class="fas fa-ruler input-icon"></i>
+                                        <select id="farmSize" name="farmSize" required>
+                                            <option value="">Select farm size</option>
+                                            <option value="small">Small (Less than 1 acre)</option>
+                                            <option value="medium">Medium (1-10 acres)</option>
+                                            <option value="large">Large (10-50 acres)</option>
+                                            <option value="commercial">Commercial (50+ acres)</option>
+                                        </select>
+                                        <i class="fas fa-chevron-down select-icon"></i>
+                                    </div>
+                                    <span class="error-message" id="farmSize-error"></span>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="farmingType">Farming Type *</label>
+                                    <div class="input-container">
+                                        <i class="fas fa-leaf input-icon"></i>
+                                        <select id="farmingType" name="farmingType" required>
+                                            <option value="">Select farming type</option>
+                                            <option value="crop">Crop Farming</option>
+                                            <option value="livestock">Livestock</option>
+                                            <option value="mixed">Mixed Farming</option>
+                                            <option value="organic">Organic Farming</option>
+                                            <option value="hydroponic">Hydroponic</option>
+                                            <option value="greenhouse">Greenhouse</option>
+                                        </select>
+                                        <i class="fas fa-chevron-down select-icon"></i>
+                                    </div>
+                                    <span class="error-message" id="farmingType-error"></span>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="primaryCrops">Primary Crops/Products</label>
+                                <div class="input-container">
+                                    <i class="fas fa-carrot input-icon"></i>
+                                    <input 
+                                        type="text" 
+                                        id="primaryCrops" 
+                                        name="primaryCrops" 
+                                        placeholder="e.g., Wheat, Corn, Tomatoes, Dairy"
+                                    >
+                                </div>
+                                <div class="input-help">Separate multiple crops with commas</div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <label for="country">Country *</label>
+                                    <div class="input-container">
+                                        <i class="fas fa-globe input-icon"></i>
+                                        <select id="country" name="country" required>
+                                            <option value="">Select your country</option>
+                                            <option value="US">United States</option>
+                                            <option value="IN">India</option>
+                                            <option value="BR">Brazil</option>
+                                            <option value="CN">China</option>
+                                            <option value="AU">Australia</option>
+                                            <option value="CA">Canada</option>
+                                            <option value="DE">Germany</option>
+                                            <option value="FR">France</option>
+                                            <option value="UK">United Kingdom</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                        <i class="fas fa-chevron-down select-icon"></i>
+                                    </div>
+                                    <span class="error-message" id="country-error"></span>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="state">State/Province</label>
+                                    <div class="input-container">
+                                        <i class="fas fa-map-marker-alt input-icon"></i>
+                                        <input 
+                                            type="text" 
+                                            id="state" 
+                                            name="state" 
+                                            placeholder="Enter state/province"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="experienceLevel">Farming Experience *</label>
+                                <div class="input-container">
+                                    <i class="fas fa-clock input-icon"></i>
+                                    <select id="experienceLevel" name="experienceLevel" required>
+                                        <option value="">Select experience level</option>
+                                        <option value="beginner">Beginner (0-2 years)</option>
+                                        <option value="intermediate">Intermediate (3-7 years)</option>
+                                        <option value="advanced">Advanced (8-15 years)</option>
+                                        <option value="expert">Expert (15+ years)</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down select-icon"></i>
+                                </div>
+                                <span class="error-message" id="experienceLevel-error"></span>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Verification & Preferences -->
+                        <div class="form-step" id="step-3">
+                            <div class="step-header">
+                                <h3>Verification & Preferences</h3>
+                                <p>Complete your profile setup</p>
+                            </div>
+
+                            <div class="verification-section">
+                                <h4>Account Verification</h4>
+                                <div class="verification-option">
+                                    <input type="radio" id="emailVerification" name="verificationType" value="email" checked>
+                                    <label for="emailVerification" class="radio-label">
+                                        <i class="fas fa-envelope"></i>
+                                        <div class="radio-content">
+                                            <strong>Email Verification</strong>
+                                            <span>We'll send a verification link to your email</span>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="verification-option">
+                                    <input type="radio" id="phoneVerification" name="verificationType" value="phone">
+                                    <label for="phoneVerification" class="radio-label">
+                                        <i class="fas fa-sms"></i>
+                                        <div class="radio-content">
+                                            <strong>SMS Verification</strong>
+                                            <span>We'll send a verification code to your phone</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="preferences-section">
+                                <h4>Notification Preferences</h4>
+                                <div class="preference-options">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" name="notifications" value="achievements" checked>
+                                        <span class="checkmark"></span>
+                                        <div class="checkbox-content">
+                                            <strong>Achievement Notifications</strong>
+                                            <span>Get notified when you unlock new badges and levels</span>
+                                        </div>
+                                    </label>
+
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" name="notifications" value="community" checked>
+                                        <span class="checkmark"></span>
+                                        <div class="checkbox-content">
+                                            <strong>Community Updates</strong>
+                                            <span>Receive updates from fellow farmers and discussions</span>
+                                        </div>
+                                    </label>
+
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" name="notifications" value="tips">
+                                        <span class="checkmark"></span>
+                                        <div class="checkbox-content">
+                                            <strong>Farming Tips & Insights</strong>
+                                            <span>Weekly tips and sustainable farming insights</span>
+                                        </div>
+                                    </label>
+
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" name="notifications" value="marketplace">
+                                        <span class="checkmark"></span>
+                                        <div class="checkbox-content">
+                                            <strong>Marketplace & Offers</strong>
+                                            <span>Special offers, discounts, and marketplace updates</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Navigation -->
+                        <div class="form-navigation">
+                            <button type="button" class="btn-secondary prev-btn" onclick="previousStep()" style="display: none;">
+                                <i class="fas fa-arrow-left"></i>
+                                <span>Previous</span>
+                            </button>
+                            
+                            <button type="button" class="btn-primary next-btn" onclick="nextStep()">
+                                <span>Next Step</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                            
+                            <button type="submit" class="btn-primary submit-btn" style="display: none;">
+                                <span>Create Account</span>
+                                <i class="fas fa-user-plus"></i>
+                                <div class="btn-loading">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <span>Creating Account...</span>
+                                </div>
+                            </button>
+                        </div>
+
+                        <!-- Terms and Privacy -->
+                        <div class="form-footer">
+                            <label class="checkbox-container terms-checkbox">
+                                <input type="checkbox" name="terms" id="termsAccept" required>
+                                <span class="checkmark"></span>
+                                <div class="checkbox-content">
+                                    <span>I agree to the <a href="#terms" class="link">Terms of Service</a> and <a href="#privacy" class="link">Privacy Policy</a></span>
+                                </div>
+                            </label>
+                        </div>
+                    </form>
+
+                    <!-- Social Signup -->
+                    <div class="social-signup">
+                        <div class="signup-divider">
+                            <span>Or sign up with</span>
+                        </div>
+                        
+                        <div class="social-buttons">
+                            <button class="social-btn google-btn" onclick="signupWithGoogle()">
+                                <i class="fab fa-google"></i>
+                                <span>Continue with Google</span>
+                            </button>
+                            
+                            <button class="social-btn facebook-btn" onclick="signupWithFacebook()">
+                                <i class="fab fa-facebook-f"></i>
+                                <span>Continue with Facebook</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="signup-footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#about">About Us</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+                <a href="#contact">Contact Support</a>
+                <a href="#help">Help Center</a>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2025 Sustainable Agriculture. Empowering farmers worldwide.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/backend-bridge.js" defer></script>
+    <script src="js/signup.js" defer></script>
+</body>
+</html>

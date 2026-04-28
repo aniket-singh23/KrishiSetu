@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Pick the Odd One Out - Farming Challenge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            min-height: 100vh;
+            color: #374151;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .game-header {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 24px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #22c55e;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .game-title {
+            text-align: center;
+            flex: 1;
+        }
+
+        .game-title h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .game-title p {
+            color: #6b7280;
+        }
+
+        .player-stats {
+            display: flex;
+            gap: 16px;
+        }
+
+        .stat-item {
+            background: #f8fafc;
+            padding: 12px 16px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e40af;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        /* Game Section */
+        .game-section {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .game-section.active {
+            display: block;
+        }
+
+        /* Menu Section */
+        .menu-section {
+            padding: 48px;
+            text-align: center;
+        }
+
+        .menu-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 16px;
+        }
+
+        .menu-section p {
+            font-size: 1.2rem;
+            color: #6b7280;
+            margin-bottom: 48px;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            padding: 16px 48px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(34, 197, 94, 0.4);
+        }
+
+        /* Game Play Section */
+        .gameplay-section {
+            padding: 32px;
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #22c55e, #3b82f6);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .question-info {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .question-number {
+            font-size: 1.1rem;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .question-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 16px;
+        }
+
+        /* Video Container */
+        .video-container {
+            position: relative;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .main-video {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .video-btn {
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .video-btn:hover {
+            background: rgba(0,0,0,0.9);
+        }
+
+        /* Show Question Button - PROMINENT */
+        .show-question-btn {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .show-question-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6);
+        }
+
+        /* Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .options-grid.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .option-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .option-card:hover {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.2);
+        }
+
+        .option-card.selected {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+            font-weight: 600;
+            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+        }
+
+        .option-card.correct {
+            border-color: #22c55e;
+            background: #22c55e;
+            color: white;
+            animation: correctAnswer 0.6s ease;
+        }
+
+        .option-card.wrong {
+            border-color: #ef4444;
+            background: #ef4444;
+            color: white;
+            animation: wrongAnswer 0.6s ease;
+        }
+
+        .option-card.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        @keyframes correctAnswer {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes wrongAnswer {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 16px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .control-btn {
+            padding: 10px 20px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .control-btn:hover {
+            background: #f3f4f6;
+        }
+
+        /* Results Section */
+        .results-section {
+            padding: 48px;
+            text-align: center;
+        }
+
+        .completion-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 2rem;
+            color: white;
+            animation: celebrate 1s ease-in-out;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .results-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .results-subtitle {
+            font-size: 1.1rem;
+            color: #6b7280;
+            margin-bottom: 32px;
+        }
+
+        .score-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .score-item {
+            background: #f8fafc;
+            padding: 24px;
+            border-radius: 16px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .score-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e40af;
+        }
+
+        .score-label {
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .badge-section {
+            background: linear-gradient(135deg, #fef3c7, #fed7aa);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .badge-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .badge-earned {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            animation: badgeEarn 1s ease-in-out;
+        }
+
+        @keyframes badgeEarn {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .badge-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .bronze-badge { background: linear-gradient(135deg, #cd7f32, #8b4513); }
+        .silver-badge { background: linear-gradient(135deg, #c0c0c0, #808080); }
+        .gold-badge { background: linear-gradient(135deg, #ffd700, #ffb347); }
+        .platinum-badge { background: linear-gradient(135deg, #e5e4e2, #b8860b); }
+
+        .badge-info h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 4px;
+        }
+
+        .badge-info p {
+            color: #a16207;
+        }
+
+        .final-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+
+        .action-btn.secondary {
+            background: white;
+            color: #374151;
+            border: 2px solid #e5e7eb;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .game-header { flex-direction: column; gap: 16px; }
+            .player-stats { justify-content: center; }
+            .options-grid { grid-template-columns: 1fr; }
+            .main-video { height: 250px; }
+            .final-actions { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body data-requires-auth="true" data-auth-redirect="../auth.html">
+    <div class="container">
+        <!-- Header -->
+        <header class="game-header">
+            <a href="../dashboard.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Dashboard</span>
+            </a>
+            
+            <div class="game-title">
+                <h1>🎯 Pick the Odd One Out</h1>
+                <p>Find farming mistakes and earn badges!</p>
+            </div>
+            
+            <div class="player-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalScore">0</div>
+                    <div class="stat-label">Score</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="badgeCount">0</div>
+                    <div class="stat-label">Badges</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="streakCount">0</div>
+                    <div class="stat-label">Streak</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Menu Section -->
+        <section class="game-section active" id="menuSection">
+            <div class="menu-section">
+                <h2>🌾 Farming Challenge</h2>
+                <p>Watch videos and identify what's wrong with farming practices to earn badges!</p>
+                
+                <button class="start-btn" onclick="startGame()">
+                    <i class="fas fa-play"></i>
+                    Start Challenge
+                </button>
+            </div>
+        </section>
+
+        <!-- Game Play Section -->
+        <section class="game-section" id="gameplaySection">
+            <div class="gameplay-section">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                
+                <div class="question-info">
+                    <div class="question-number" id="questionNumber">Question 1 of 2</div>
+                    <div class="question-title" id="questionTitle">What's wrong in this farming video?</div>
+                </div>
+                
+                <!-- Video Container -->
+                <div class="video-container">
+                    <video class="main-video" id="mainVideo" controls loop>
+                        <source src="" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                    
+                    <div class="video-controls">
+                        <button class="video-btn" onclick="replayVideo()">
+                            <i class="fas fa-redo"></i> Replay
+                        </button>
+                        <button class="video-btn" onclick="showHint()" id="hintBtn">
+                            <i class="fas fa-lightbulb"></i> Hint (3)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Prominent Answer Button -->
+                <div style="text-align: center;">
+                    <button class="show-question-btn" id="showQuestionBtn" onclick="showQuestion()">
+                        <i class="fas fa-question-circle"></i>
+                        Show Answer Options
+                    </button>
+                </div>
+                
+                <!-- Multiple Choice Options -->
+                <div class="options-grid" id="optionsGrid">
+                    <!-- Options populated by JavaScript -->
+                </div>
+                
+                <button class="submit-btn" id="submitBtn" onclick="submitAnswer()" disabled>
+                    <i class="fas fa-check"></i>
+                    Submit Answer
+                </button>
+                
+                <div class="game-controls">
+                    <button class="control-btn" onclick="pauseGame()">
+                        <i class="fas fa-pause"></i> Pause
+                    </button>
+                    <button class="control-btn" onclick="skipQuestion()">
+                        <i class="fas fa-forward"></i> Skip
+                    </button>
+                    <button class="control-btn" onclick="quitGame()">
+                        <i class="fas fa-times"></i> Quit
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="game-section" id="resultsSection">
+            <div class="results-section">
+                <div class="completion-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h2 class="results-title">Challenge Complete!</h2>
+                <p class="results-subtitle">Great job identifying farming issues!</p>
+                
+                <div class="score-display">
+                    <div class="score-item">
+                        <div class="score-value" id="finalScore">0</div>
+                        <div class="score-label">Final Score</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value" id="correctAnswers">0</div>
+                        <div class="score-label">Correct</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value" id="accuracy">0%</div>
+                        <div class="score-label">Accuracy</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value" id="timeTaken">0s</div>
+                        <div class="score-label">Time</div>
+                    </div>
+                </div>
+                
+                <div class="badge-section" id="badgeSection">
+                    <h3 class="badge-title">🏆 Badge Earned!</h3>
+                    <div class="badge-earned" id="badgeEarned">
+                        <!-- Badge populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="final-actions">
+                    <button class="action-btn primary" onclick="playAgain()">
+                        <i class="fas fa-redo"></i> Play Again
+                    </button>
+                    <button class="action-btn secondary" onclick="returnToDashboard()">
+                        <i class="fas fa-home"></i> Dashboard
+                    </button>
+                    <button class="action-btn secondary" onclick="shareResults()">
+                        <i class="fas fa-share"></i> Share Score
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="../js/backend-bridge.js" defer></script>
+    <script>
+        class PickOddOutGame {
+            constructor() {
+                this.currentQuestion = 0;
+                this.totalQuestions = 2; // Updated to 2 questions
+                this.score = 0;
+                this.correctAnswers = 0;
+                this.selectedOption = null;
+                this.startTime = null;
+                this.hintsUsed = 0;
+                this.maxHints = 3;
+                this.streak = 0;
+                this.badges = [];
+                this.questionShown = false;
+                
+                // 🎯 TWO COMPLETE QUESTIONS WITH FARMING SCENARIOS
+                this.questions = [
+                    {
+                        question: "What's the main problem with this watering technique?",
+                        video: "./videos/video-01.mp4", // 👈 YOUR FIRST VIDEO
+                        options: [
+                            "Watering during midday heat causes evaporation",
+                            "Using too much water at once",
+                            "Wrong watering tool for this crop type",
+                            "The watering frequency is perfectly fine"
+                        ],
+                        correct: 0, // First option is correct
+                        explanation: "Watering during midday causes rapid evaporation and can burn plant leaves due to the magnifying effect of water droplets. Best times are early morning (6-8 AM) or evening (6-8 PM) when temperatures are cooler.",
+                        hint: "Consider the time of day and sun intensity. When does water evaporate fastest?"
+                    },
+                    {
+                        question: "What's wrong with this natural fertilizer and pesticide application?",
+                        video: "./videos/video-02.mp4", // 👈 YOUR SECOND VIDEO
+                        options: [
+                            "Using organic neem oil is completely safe",
+                            "Applying fertilizer and pesticide at the same time",
+                            "The concentration of natural pesticide is too weak",
+                            "Organic methods take longer to show results"
+                        ],
+                        correct: 1, // Second option is correct
+                        explanation: "Applying fertilizer and pesticide simultaneously can reduce the effectiveness of both. Natural fertilizers need time to be absorbed by plants before applying pest control treatments. It's better to space them 3-7 days apart.",
+                        hint: "Think about how different treatments interact with each other and plant absorption rates."
+                    }
+                ];
+                
+                this.loadUserProgress();
+            }
+
+            loadUserProgress() {
+                const saved = localStorage.getItem('pickOddOutProgress');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    this.badges = data.badges || [];
+                    document.getElementById('totalScore').textContent = data.totalScore || 0;
+                    document.getElementById('badgeCount').textContent = this.badges.length;
+                    document.getElementById('streakCount').textContent = data.streak || 0;
+                }
+            }
+
+            saveUserProgress() {
+                const data = {
+                    totalScore: parseInt(document.getElementById('totalScore').textContent) + this.score,
+                    streak: this.streak,
+                    badges: this.badges
+                };
+                localStorage.setItem('pickOddOutProgress', JSON.stringify(data));
+            }
+
+            startGame() {
+                this.currentQuestion = 0;
+                this.score = 0;
+                this.correctAnswers = 0;
+                this.selectedOption = null;
+                this.startTime = Date.now();
+                this.hintsUsed = 0;
+                this.questionShown = false;
+                
+                document.getElementById('menuSection').classList.remove('active');
+                document.getElementById('gameplaySection').classList.add('active');
+                document.getElementById('resultsSection').classList.remove('active');
+                
+                this.loadQuestion();
+            }
+
+            loadQuestion() {
+                const question = this.questions[this.currentQuestion];
+                
+                // Update UI
+                document.getElementById('questionNumber').textContent = 
+                    `Question ${this.currentQuestion + 1} of ${this.totalQuestions}`;
+                document.getElementById('questionTitle').textContent = question.question;
+                
+                // Update progress bar
+                const progress = ((this.currentQuestion + 1) / this.totalQuestions) * 100;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+                
+                // Load video
+                const video = document.getElementById('mainVideo');
+                video.src = question.video;
+                video.load();
+                
+                // Reset UI elements
+                this.selectedOption = null;
+                this.questionShown = false;
+                document.getElementById('submitBtn').disabled = true;
+                document.getElementById('showQuestionBtn').style.display = 'block';
+                document.getElementById('optionsGrid').classList.remove('show');
+                document.getElementById('optionsGrid').innerHTML = '';
+                
+                // Reset hint button
+                document.getElementById('hintBtn').innerHTML = 
+                    `<i class="fas fa-lightbulb"></i> Hint (${this.maxHints - this.hintsUsed})`;
+                
+                console.log(`📹 Loaded Question ${this.currentQuestion + 1}: ${question.question}`);
+            }
+
+            showQuestion() {
+                if (this.questionShown) return;
+                
+                const question = this.questions[this.currentQuestion];
+                const optionsGrid = document.getElementById('optionsGrid');
+                
+                // Clear and populate options
+                optionsGrid.innerHTML = '';
+                
+                question.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'option-card';
+                    optionElement.textContent = option;
+                    optionElement.onclick = () => this.selectOption(index);
+                    optionsGrid.appendChild(optionElement);
+                });
+                
+                // Show options with animation
+                optionsGrid.classList.add('show');
+                document.getElementById('showQuestionBtn').style.display = 'none';
+                this.questionShown = true;
+                
+                console.log('📋 Question options displayed');
+            }
+
+            selectOption(index) {
+                // Remove previous selections
+                document.querySelectorAll('.option-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                
+                // Select new option
+                document.querySelectorAll('.option-card')[index].classList.add('selected');
+                this.selectedOption = index;
+                document.getElementById('submitBtn').disabled = false;
+                
+                console.log(`✅ Selected option ${index + 1}`);
+            }
+
+            submitAnswer() {
+                if (this.selectedOption === null) return;
+                
+                const question = this.questions[this.currentQuestion];
+                const correct = this.selectedOption === question.correct;
+                const options = document.querySelectorAll('.option-card');
+                
+                // Show correct/wrong styling
+                options.forEach((option, index) => {
+                    option.classList.add('disabled');
+                    if (index === question.correct) {
+                        option.classList.add('correct');
+                    } else if (index === this.selectedOption && !correct) {
+                        option.classList.add('wrong');
+                    }
+                });
+                
+                // Calculate score
+                if (correct) {
+                    const baseScore = 100;
+                    const hintPenalty = this.hintsUsed * 10;
+                    const questionScore = Math.max(baseScore - hintPenalty, 20);
+                    this.score += questionScore;
+                    this.correctAnswers++;
+                    this.streak++;
+                } else {
+                    this.streak = 0;
+                }
+                
+                // Show result
+                setTimeout(() => {
+                    const resultEmoji = correct ? '🎉' : '😔';
+                    const resultText = correct ? 'Correct!' : 'Wrong Answer';
+                    alert(`${resultEmoji} ${resultText}\n\n💡 Explanation:\n${question.explanation}`);
+                    
+                    // Move to next question or finish
+                    setTimeout(() => {
+                        this.currentQuestion++;
+                        if (this.currentQuestion >= this.totalQuestions) {
+                            this.finishGame();
+                        } else {
+                            this.loadQuestion();
+                        }
+                    }, 1000);
+                }, 1000);
+                
+                console.log(`📊 Answer submitted. Correct: ${correct}, Score: ${this.score}`);
+            }
+
+            replayVideo() {
+                const video = document.getElementById('mainVideo');
+                video.currentTime = 0;
+                video.play();
+                console.log('🔄 Video replayed');
+            }
+
+            showHint() {
+                if (this.hintsUsed >= this.maxHints) {
+                    alert('💡 No hints remaining!');
+                    return;
+                }
+                
+                const question = this.questions[this.currentQuestion];
+                alert(`💡 Hint:\n${question.hint}`);
+                
+                this.hintsUsed++;
+                document.getElementById('hintBtn').innerHTML = 
+                    `<i class="fas fa-lightbulb"></i> Hint (${this.maxHints - this.hintsUsed})`;
+                
+                if (this.hintsUsed >= this.maxHints) {
+                    document.getElementById('hintBtn').disabled = true;
+                }
+                
+                console.log(`💡 Hint used. Remaining: ${this.maxHints - this.hintsUsed}`);
+            }
+
+            skipQuestion() {
+                if (confirm('Are you sure you want to skip this question? You won\'t get points for it.')) {
+                    this.streak = 0;
+                    this.currentQuestion++;
+                    if (this.currentQuestion >= this.totalQuestions) {
+                        this.finishGame();
+                    } else {
+                        this.loadQuestion();
+                    }
+                }
+            }
+
+            pauseGame() {
+                const video = document.getElementById('mainVideo');
+                video.pause();
+                alert('⏸️ Game paused. Click OK to continue.');
+            }
+
+            quitGame() {
+                if (confirm('❌ Are you sure you want to quit? Your progress will be lost.')) {
+                    this.returnToMenu();
+                }
+            }
+
+            finishGame() {
+                const endTime = Date.now();
+                const timeTaken = Math.round((endTime - this.startTime) / 1000);
+                const accuracy = Math.round((this.correctAnswers / this.totalQuestions) * 100);
+                
+                // Update results display
+                document.getElementById('finalScore').textContent = this.score;
+                document.getElementById('correctAnswers').textContent = this.correctAnswers;
+                document.getElementById('accuracy').textContent = `${accuracy}%`;
+                document.getElementById('timeTaken').textContent = `${timeTaken}s`;
+                
+                // Calculate and show badge
+                const badge = this.calculateBadge(accuracy, this.score);
+                if (badge) {
+                    this.badges.push(badge);
+                    this.showBadgeEarned(badge);
+                } else {
+                    document.getElementById('badgeSection').style.display = 'none';
+                }
+                
+                // Save progress
+                this.saveUserProgress();
+
+                // Sync gameplay result to backend if user is authenticated
+                if (window.backendBridge) {
+                    window.backendBridge.saveGameResult({
+                        game: 'pick-odd-out',
+                        score: this.score,
+                        accuracy,
+                        completed: true,
+                        won: this.correctAnswers > 0
+                    }).then(() => window.backendBridge.syncCurrentUserToStorage())
+                      .catch((error) => console.warn('Failed to sync Pick Odd Out stats:', error.message));
+                }
+                
+                // Update header stats
+                document.getElementById('totalScore').textContent = 
+                    parseInt(document.getElementById('totalScore').textContent) + this.score;
+                document.getElementById('badgeCount').textContent = this.badges.length;
+                document.getElementById('streakCount').textContent = this.streak;
+                
+                // Switch to results section
+                document.getElementById('gameplaySection').classList.remove('active');
+                document.getElementById('resultsSection').classList.add('active');
+                
+                console.log('🏆 Game completed!', { score: this.score, accuracy, timeTaken });
+            }
+
+            calculateBadge(accuracy, score) {
+                if (accuracy === 100 && score >= 180) {
+                    return { type: 'platinum', name: 'Perfect Farmer', description: 'Perfect score with no hints!' };
+                } else if (accuracy >= 80 && score >= 140) {
+                    return { type: 'gold', name: 'Expert Farmer', description: 'Excellent farming knowledge!' };
+                } else if (accuracy >= 50 && score >= 100) {
+                    return { type: 'silver', name: 'Skilled Farmer', description: 'Good understanding of farming practices!' };
+                } else if (this.correctAnswers > 0) {
+                    return { type: 'bronze', name: 'Learning Farmer', description: 'Keep learning and improving!' };
+                }
+                return null;
+            }
+
+            showBadgeEarned(badge) {
+                const badgeElement = document.getElementById('badgeEarned');
+                badgeElement.innerHTML = `
+                    <div class="badge-icon ${badge.type}-badge">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <div class="badge-info">
+                        <h4>${badge.name}</h4>
+                        <p>${badge.description}</p>
+                    </div>
+                `;
+            }
+
+            playAgain() {
+                this.startGame();
+            }
+
+            returnToMenu() {
+                document.getElementById('gameplaySection').classList.remove('active');
+                document.getElementById('resultsSection').classList.remove('active');
+                document.getElementById('menuSection').classList.add('active');
+            }
+
+            returnToDashboard() {
+                window.location.href = '../dashboard.html';
+            }
+
+            shareResults() {
+                const text = `🎯 I just completed the Farming Challenge and scored ${this.score} points with ${Math.round((this.correctAnswers/this.totalQuestions)*100)}% accuracy! 🌾 #SustainableFarming`;
+                
+                if (navigator.share) {
+                    navigator.share({ title: 'Farming Challenge Results', text });
+                } else if (navigator.clipboard) {
+                    navigator.clipboard.writeText(text);
+                    alert('📋 Results copied to clipboard!');
+                } else {
+                    alert(`📤 Share your results:\n${text}`);
+                }
+            }
+        }
+
+        // Initialize game
+        let game = new PickOddOutGame();
+
+        // Global functions
+        function startGame() { game.startGame(); }
+        function showQuestion() { game.showQuestion(); }
+        function replayVideo() { game.replayVideo(); }
+        function showHint() { game.showHint(); }
+        function submitAnswer() { game.submitAnswer(); }
+        function skipQuestion() { game.skipQuestion(); }
+        function pauseGame() { game.pauseGame(); }
+        function quitGame() { game.quitGame(); }
+        function playAgain() { game.playAgain(); }
+        function returnToDashboard() { game.returnToDashboard(); }
+        function shareResults() { game.shareResults(); }
+    </script>
+</body>
+</html>

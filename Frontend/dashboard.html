@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-translate="page-title">Krishi Setu Dashboard</title>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@300;400;500;600;700&family=Noto+Sans+Malayalam:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Dashboard CSS -->
+    <link rel="stylesheet" href="css/dashboard.css">
+    
+    <!-- Text-to-Speech -->
+    <script src="text-to-speech.js" defer></script>
+</head>
+<body data-requires-auth="true" data-auth-redirect="auth.html">
+    <a href="#dashboard-section" class="skip-link">Skip to main content</a>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2 data-translate="loading">Loading Dashboard...</h2>
+            <p data-translate="loading-subtitle">Preparing your farming experience</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-left">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                <h1 data-translate="platform-name">Krishi Setu</h1>
+            </div>
+        </div>
+        
+        <div class="header-center">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" data-translate-placeholder="search-placeholder" placeholder="Search crops, tips, or tools..." aria-label="Search crops, tips, or tools">
+            </div>
+        </div>
+        
+        <div class="header-right">
+            <!-- Weather Widget -->
+            <div class="weather-widget" id="weather-widget">
+                <div class="weather-icon">☀️</div>
+                <div class="weather-info">
+                    <span class="weather-temp">28°C</span>
+                    <span class="weather-desc" data-translate="sunny">Sunny</span>
+                </div>
+            </div>
+            
+            <!-- Language Selector -->
+            <div class="language-selector">
+                <button type="button" class="language-btn" id="language-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="language-dropdown" aria-label="Change language">
+                    <i class="fas fa-globe"></i>
+                    <span id="current-language">EN</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown" id="language-dropdown" role="listbox" aria-label="Language options">
+                    <div class="language-option" data-lang="en" role="option" tabindex="0">🇺🇸 English</div>
+                    <div class="language-option" data-lang="hi" role="option" tabindex="0">🇮🇳 हिन्दी</div>
+                    <div class="language-option" data-lang="ml" role="option" tabindex="0">🇮🇳 മലയാളം</div>
+                    <div class="language-option" data-lang="te" role="option" tabindex="0">🇮🇳 తెలుగు</div>
+                </div>
+            </div>
+            
+            <!-- Notifications -->
+            <div class="notifications" id="notifications" role="button" tabindex="0" aria-haspopup="menu" aria-expanded="false" aria-controls="notifications-dropdown" aria-label="Open notifications">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" id="notification-count">3</span>
+                <div class="notifications-dropdown" id="notifications-dropdown" role="menu" aria-label="Notifications">
+                    <div class="notification-header">
+                        <h3 data-translate="notifications" id="notifications-title">Notifications</h3>
+                        <button type="button" class="clear-all" data-translate="clear-all">Clear All</button>
+                    </div>
+                    <div class="notification-list" id="notification-list">
+                        <!-- Notifications will be populated by JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- User Profile -->
+            <div class="user-profile" id="user-profile" role="button" tabindex="0" aria-haspopup="menu" aria-expanded="false" aria-controls="profile-dropdown" aria-label="Open user profile menu">
+                <img src="objects/cute-hamster-pictures-v40l43qg8o7pwdtp.webp" alt="User profile avatar" class="user-avatar" id="user-avatar">
+                <div class="user-info">
+                    <span class="user-name" id="user-name">Rakesh Gupta</span>
+                    <span class="user-level" data-translate="level">Level 5</span>
+                </div>
+                <div class="profile-dropdown" id="profile-dropdown" role="menu" aria-label="User menu">
+                    <a href="profile.html" data-translate="my-profile">My Profile</a>
+                    <a href="settings.html" data-translate="settings">Settings</a>
+                    <a href="help.html" data-translate="help">Help & Support</a>
+                    <hr>
+                    <a href="auth.html" data-translate="logout">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <main class="dashboard-main">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <ul class="nav-menu">
+                <li class="nav-item active">
+                    <a href="#dashboard" class="nav-link" data-section="dashboard">
+                        <i class="fas fa-home"></i>
+                        <span data-translate="dashboard">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#quests" class="nav-link" data-section="quests">
+                        <i class="fas fa-tasks"></i>
+                        <span data-translate="daily-quests">Daily Quests</span>
+                        <span class="nav-badge">5</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#workplace" class="nav-link" data-section="workplace">
+                        <i class="fas fa-tractor"></i>
+                        <span data-translate="workplace">My Farm</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#progress" class="nav-link" data-section="progress">
+                        <i class="fas fa-chart-line"></i>
+                        <span data-translate="progress">Progress</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#marketplace" class="nav-link" data-section="marketplace">
+                        <i class="fas fa-store"></i>
+                        <span data-translate="marketplace">Marketplace</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#games" class="nav-link" data-section="games">
+                        <i class="fas fa-gamepad"></i>
+                        <span data-translate="games">Games</span>
+                        <span class="nav-badge new">2</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="learning.html" class="nav-link">
+                        <i class="fas fa-book-open"></i>
+                        <span data-translate="learning">Learning Hub</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <!-- Quick Stats -->
+            <div class="quick-stats">
+                <h3 data-translate="quick-stats">Quick Stats</h3>
+                <div class="stat-item">
+                    <i class="fas fa-seedling"></i>
+                    <div>
+                        <span class="stat-number" id="crops-planted">127</span>
+                        <span class="stat-label" data-translate="crops-planted">Crops Planted</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-award"></i>
+                    <div>
+                        <span class="stat-number" id="achievements">23</span>
+                        <span class="stat-label" data-translate="achievements">Achievements</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-coins"></i>
+                    <div>
+                        <span class="stat-number" id="green-coins">1,540</span>
+                        <span class="stat-label" data-translate="green-coins">Green Coins</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Dashboard Overview Section -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="section-header">
+                    <h2 data-translate="welcome-back">Welcome back, Farmer!</h2>
+                    <p data-translate="dashboard-subtitle">Here's your farming progress overview</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🌱</div>
+                        <div class="stat-content">
+                            <h3 id="daily-quests-completed">7</h3>
+                            <p data-translate="daily-quests-completed">Quests Completed Today</p>
+                            <div class="stat-progress">
+                                <div class="progress-bar" style="width: 70%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-content">
+                            <h3 id="current-streak">12</h3>
+                            <p data-translate="day-streak">Day Streak</p>
+                            <div class="stat-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+3 days</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-content">
+                            <h3 id="total-harvest">2.4kg</h3>
+                            <p data-translate="total-harvest">Total Harvest</p>
+                            <div class="stat-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+0.3kg</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">🌿</div>
+                        <div class="stat-content">
+                            <h3 id="sustainability-score">8.7/10</h3>
+                            <p data-translate="sustainability-score">Sustainability Score</p>
+                            <div class="stat-progress">
+                                <div class="progress-bar" style="width: 87%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity and Quick Actions -->
+                <div class="dashboard-grid">
+                    <div class="recent-activity">
+                        <h3 data-translate="recent-activity">Recent Activity</h3>
+                        <div class="activity-list" id="activity-list">
+                            <!-- Activities populated by JS -->
+                        </div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <h3 data-translate="quick-actions">Quick Actions</h3>
+                        <div class="action-buttons">
+                            <button type="button" class="action-btn" onclick="dashboard.startQuest()">
+                                <i class="fas fa-play"></i>
+                                <span data-translate="start-daily-quest">Start Daily Quest</span>
+                            </button>
+                            <button type="button" class="action-btn" onclick="dashboard.openFarm()">
+                                <i class="fas fa-tractor"></i>
+                                <span data-translate="visit-farm">Visit My Farm</span>
+                            </button>
+                            <button type="button" class="action-btn" onclick="dashboard.switchSection('games')">
+                                <i class="fas fa-gamepad"></i>
+                                <span data-translate="play-games">Play Games</span>
+                            </button>
+                            <button type="button" class="action-btn" onclick="dashboard.openMarket()">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span data-translate="browse-market">Browse Marketplace</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Daily Quests Section -->
+            <section id="quests-section" class="content-section">
+                <div class="section-header">
+                    <h2 data-translate="daily-quests">Daily Quests</h2>
+                    <p data-translate="quests-subtitle">Complete tasks to earn rewards and improve your farming skills</p>
+                </div>
+
+                <div class="quests-container">
+                    <div class="quest-filters">
+                        <button type="button" class="filter-btn active" data-filter="all" data-translate="all-quests" aria-pressed="true">All Quests</button>
+                        <button type="button" class="filter-btn" data-filter="active" data-translate="active-quests" aria-pressed="false">Active</button>
+                        <button type="button" class="filter-btn" data-filter="completed" data-translate="completed-quests" aria-pressed="false">Completed</button>
+                        <button type="button" class="filter-btn" data-filter="featured" data-translate="featured-quests" aria-pressed="false">Featured</button>
+                    </div>
+
+                    <div class="quests-grid" id="quests-grid">
+                        <!-- Quests populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- My Farm (Workplace) Section -->
+            <section id="workplace-section" class="content-section">
+                <div class="section-header">
+                    <h2 data-translate="my-farm">My Farm</h2>
+                    <p data-translate="farm-subtitle">Manage your crops, livestock, and farm infrastructure</p>
+                </div>
+
+                <div class="farm-overview">
+                    <div class="farm-stats">
+                        <div class="farm-stat">
+                            <i class="fas fa-map"></i>
+                            <div>
+                                <h4 data-translate="farm-area">Farm Area</h4>
+                                <p>2.5 acres</p>
+                            </div>
+                        </div>
+                        <div class="farm-stat">
+                            <i class="fas fa-thermometer-half"></i>
+                            <div>
+                                <h4 data-translate="soil-health">Soil Health</h4>
+                                <p>Excellent (9.2/10)</p>
+                            </div>
+                        </div>
+                        <div class="farm-stat">
+                            <i class="fas fa-tint"></i>
+                            <div>
+                                <h4 data-translate="water-level">Water Level</h4>
+                                <p>75% Full</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="farm-sections">
+                        <div class="farm-section">
+                            <h3 data-translate="crop-fields">Crop Fields</h3>
+                            <div class="crops-grid" id="crops-grid">
+                                <!-- Crops populated by JS -->
+                            </div>
+                        </div>
+
+                        <div class="farm-section">
+                            <h3 data-translate="livestock">Livestock</h3>
+                            <div class="livestock-grid" id="livestock-grid">
+                                <!-- Livestock populated by JS -->
+                            </div>
+                        </div>
+
+                        <div class="farm-section">
+                            <h3 data-translate="farm-tools">Farm Tools & Equipment</h3>
+                            <div class="tools-grid" id="tools-grid">
+                                <!-- Tools populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Progress Section -->
+            <section id="progress-section" class="content-section">
+                <div class="section-header">
+                    <h2 data-translate="progress-tracking">Progress Tracking</h2>
+                    <p data-translate="progress-subtitle">Monitor your farming journey and achievements</p>
+                </div>
+
+                <div class="progress-dashboard">
+                    <div class="progress-overview">
+                        <div class="level-progress">
+                            <h3 data-translate="farmer-level">Farmer Level 5</h3>
+                            <div class="xp-bar">
+                                <div class="xp-fill" style="width: 65%"></div>
+                                <span class="xp-text">650 / 1000 XP</span>
+                            </div>
+                            <p data-translate="next-level">350 XP until Level 6</p>
+                        </div>
+
+                        <div class="achievements-preview">
+                            <h3 data-translate="recent-achievements">Recent Achievements</h3>
+                            <div class="achievements-list" id="achievements-list">
+                                <!-- Achievements populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="progress-charts">
+                        <div class="chart-container">
+                            <h3 data-translate="harvest-trends">Harvest Trends</h3>
+                            <canvas id="harvest-chart"></canvas>
+                        </div>
+
+                        <div class="chart-container">
+                            <h3 data-translate="sustainability-metrics">Sustainability Metrics</h3>
+                            <canvas id="sustainability-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="progress-goals">
+                        <h3 data-translate="current-goals">Current Goals</h3>
+                        <div class="goals-list" id="goals-list">
+                            <!-- Goals populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Marketplace Section -->
+            <section id="marketplace-section" class="content-section">
+                <div class="section-header">
+                    <h2 data-translate="marketplace">Marketplace</h2>
+                    <p data-translate="marketplace-subtitle">Buy and sell farming supplies, crops, and equipment</p>
+                </div>
+
+                <div class="marketplace-container">
+                    <div class="marketplace-filters">
+                        <select id="category-filter" class="filter-select">
+                            <option value="all" data-translate="all-categories">All Categories</option>
+                            <option value="seeds" data-translate="seeds">Seeds</option>
+                            <option value="tools" data-translate="tools">Tools</option>
+                            <option value="fertilizers" data-translate="fertilizers">Fertilizers</option>
+                            <option value="equipment" data-translate="equipment">Equipment</option>
+                        </select>
+
+                        <select id="price-filter" class="filter-select">
+                            <option value="all" data-translate="all-prices">All Prices</option>
+                            <option value="low" data-translate="low-to-high">Low to High</option>
+                            <option value="high" data-translate="high-to-low">High to Low</option>
+                        </select>
+
+                        <div class="search-marketplace">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="marketplace-search" data-translate-placeholder="search-products" placeholder="Search products...">
+                        </div>
+                    </div>
+
+                    <div class="marketplace-grid" id="marketplace-grid">
+                        <!-- Products populated by JS -->
+                    </div>
+
+                    <div class="my-listings">
+                        <h3 data-translate="my-listings">My Listings</h3>
+                        <div class="listings-grid" id="listings-grid">
+                            <!-- User's listings populated by JS -->
+                        </div>
+                        <button class="add-listing-btn" onclick="dashboard.addListing()">
+                            <i class="fas fa-plus"></i>
+                            <span data-translate="add-listing">Add New Listing</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Games Section -->
+            <section id="games-section" class="content-section">
+                <div class="section-header">
+                    <h2 data-translate="games">🎮 Games</h2>
+                    <p data-translate="games-subtitle">Learn farming through fun and engaging games</p>
+                </div>
+
+                <div class="games-container">
+                    <!-- Featured Games -->
+                    <div class="featured-games">
+                        <h3 data-translate="featured-games">Featured Games</h3>
+                        <div class="games-grid" id="games-grid">
+                            <!-- Virtual Farmery Game -->
+                            <div class="game-card featured" onclick="dashboard.playGame('virtual-farmery')">
+                                <div class="game-image">
+                                    <div class="game-icon">🌾</div>
+                                    <div class="game-badge new">NEW</div>
+                                </div>
+                                <div class="game-content">
+                                    <h3 class="game-title" data-translate="virtual-farmery">Virtual Farmery</h3>
+                                    <p class="game-description" data-translate="farmery-desc">
+                                        Build and manage your own sustainable farm. Plant crops, care for animals, and harvest rewards!
+                                    </p>
+                                    <div class="game-stats">
+                                        <div class="game-stat">
+                                            <i class="fas fa-users"></i>
+                                            <span>1,247 players</span>
+                                        </div>
+                                        <div class="game-stat">
+                                            <i class="fas fa-star"></i>
+                                            <span>4.8 rating</span>
+                                        </div>
+                                        <div class="game-stat">
+                                            <i class="fas fa-clock"></i>
+                                            <span>15-30 min</span>
+                                        </div>
+                                    </div>
+                                    <div class="game-rewards">
+                                        <span class="reward-tag">
+                                            <i class="fas fa-coins"></i>
+                                            Up to 200 XP
+                                        </span>
+                                        <span class="reward-tag">
+                                            <i class="fas fa-trophy"></i>
+                                            Achievements
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pick Odd Out Game -->
+                            <div class="game-card" onclick="dashboard.playGame('pick-odd-out')">
+                                <div class="game-image">
+                                    <div class="game-icon">🧩</div>
+                                    <div class="game-badge popular">POPULAR</div>
+                                </div>
+                                <div class="game-content">
+                                    <h3 class="game-title" data-translate="pick-odd-out">Pick Odd Out</h3>
+                                    <p class="game-description" data-translate="pick-odd-desc">
+                                        Test your farming knowledge! Identify which item doesn't belong in farming categories.
+                                    </p>
+                                    <div class="game-stats">
+                                        <div class="game-stat">
+                                            <i class="fas fa-users"></i>
+                                            <span>2,156 players</span>
+                                        </div>
+                                        <div class="game-stat">
+                                            <i class="fas fa-star"></i>
+                                            <span>4.6 rating</span>
+                                        </div>
+                                        <div class="game-stat">
+                                            <i class="fas fa-clock"></i>
+                                            <span>5-10 min</span>
+                                        </div>
+                                    </div>
+                                    <div class="game-rewards">
+                                        <span class="reward-tag">
+                                            <i class="fas fa-coins"></i>
+                                            Up to 100 XP
+                                        </span>
+                                        <span class="reward-tag">
+                                            <i class="fas fa-brain"></i>
+                                            Knowledge Points
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Game Categories -->
+                    <div class="game-categories">
+                        <h3 data-translate="game-categories">Game Categories</h3>
+                        <div class="categories-grid">
+                            <div class="category-card" onclick="dashboard.filterGames('simulation')">
+                                <div class="category-icon">🚜</div>
+                                <h4 data-translate="simulation-games">Simulation Games</h4>
+                                <p data-translate="simulation-desc">Build and manage virtual farms</p>
+                                <span class="game-count">1 game</span>
+                            </div>
+                            
+                            <div class="category-card" onclick="dashboard.filterGames('puzzle')">
+                                <div class="category-icon">🧩</div>
+                                <h4 data-translate="puzzle-games">Puzzle Games</h4>
+                                <p data-translate="puzzle-desc">Test your farming knowledge</p>
+                                <span class="game-count">1 game</span>
+                            </div>
+                            
+                            <div class="category-card coming-soon">
+                                <div class="category-icon">🏆</div>
+                                <h4 data-translate="strategy-games">Strategy Games</h4>
+                                <p data-translate="strategy-desc">Plan and optimize farming</p>
+                                <span class="coming-soon-tag">Coming Soon</span>
+                            </div>
+                            
+                            <div class="category-card coming-soon">
+                                <div class="category-icon">🎯</div>
+                                <h4 data-translate="arcade-games">Arcade Games</h4>
+                                <p data-translate="arcade-desc">Fast-paced farming fun</p>
+                                <span class="coming-soon-tag">Coming Soon</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Game Leaderboards -->
+                    <div class="game-leaderboards">
+                        <h3 data-translate="leaderboards">🏆 Leaderboards</h3>
+                        <div class="leaderboard-tabs">
+                            <button class="leaderboard-tab active" data-game="virtual-farmery">Virtual Farmery</button>
+                            <button class="leaderboard-tab" data-game="pick-odd-out">Pick Odd Out</button>
+                        </div>
+                        <div class="leaderboard-content" id="leaderboard-content">
+                            <!-- Leaderboard populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Your Game Stats -->
+                    <div class="player-stats">
+                        <h3 data-translate="your-game-stats">Your Game Stats</h3>
+                        <div class="player-stats-grid">
+                            <div class="player-stat-card">
+                                <div class="stat-icon">🎮</div>
+                                <div class="stat-info">
+                                    <h4>12</h4>
+                                    <p data-translate="games-played">Games Played</p>
+                                </div>
+                            </div>
+                            
+                            <div class="player-stat-card">
+                                <div class="stat-icon">🏆</div>
+                                <div class="stat-info">
+                                    <h4>850</h4>
+                                    <p data-translate="total-score">Total Score</p>
+                                </div>
+                            </div>
+                            
+                            <div class="player-stat-card">
+                                <div class="stat-icon">⚡</div>
+                                <div class="stat-info">
+                                    <h4>5</h4>
+                                    <p data-translate="win-streak">Win Streak</p>
+                                </div>
+                            </div>
+                            
+                            <div class="player-stat-card">
+                                <div class="stat-icon">🎯</div>
+                                <div class="stat-info">
+                                    <h4>76%</h4>
+                                    <p data-translate="accuracy">Accuracy</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <div class="footer-content">
+            <p data-translate="footer-text">&copy; 2025 Krishi Setu Platform. Empowering farmers worldwide.</p>
+            <div class="footer-links">
+                <a href="about.html" data-translate="about">About</a>
+                <a href="contact.html" data-translate="contact">Contact</a>
+                <a href="privacy.html" data-translate="privacy">Privacy</a>
+                <a href="terms.html" data-translate="terms">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="quest-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 data-translate="quest-details">Quest Details</h2>
+            <div id="quest-modal-content"></div>
+        </div>
+    </div>
+
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 data-translate="product-details">Product Details</h2>
+            <div id="product-modal-content"></div>
+        </div>
+    </div>
+
+    <div id="game-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 data-translate="game-loading">Loading Game...</h2>
+            <div id="game-modal-content">
+                <div class="game-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Preparing your game experience...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/backend-bridge.js" defer></script>
+    <script src="js/dashboard.data.js" defer></script>
+    <script src="js/dashboard.js" defer></script>
+    <script src="voice-assistant.js" defer></script>
+</body>
+</html>

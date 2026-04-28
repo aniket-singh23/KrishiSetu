@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌾 Virtual Farmery - Sustainable Farming Game</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playpen+Sans&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #22c55e;
+            --secondary-blue: #3b82f6;
+            --accent-orange: #f59e0b;
+            --success-green: #10b981;
+            --warning-yellow: #eab308;
+            --error-red: #ef4444;
+            --brown: #8B4513;
+            --light-brown: #DEB887;
+            --soil-brown: #A0522D;
+            --sky-blue: #87CEEB;
+            --grass-green: #4CAF50;
+            --cream: #F0E68C;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Playpen Sans', sans-serif;
+            display: flex;
+            overflow: hidden;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            user-select: none;
+            background: linear-gradient(to bottom, var(--sky-blue) 75%, var(--grass-green) 25%);
+            touch-action: manipulation;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-green), var(--success-green));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: white;
+            font-size: 1.5rem;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Game Container */
+        #game-container {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            width: 95%;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 4px solid var(--brown);
+            border-radius: 20px;
+            background: linear-gradient(145deg, var(--cream), #f5f0c8);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        /* Header */
+        .game-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--success-green);
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-green);
+            transform: translateY(-2px);
+        }
+
+        h1 {
+            font-size: 2rem;
+            text-align: center;
+            color: #4A7023;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            flex: 1;
+        }
+
+        .language-selector {
+            position: relative;
+        }
+
+        .language-btn {
+            background: var(--secondary-blue);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .language-btn:hover {
+            background: #2563eb;
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 2px solid var(--secondary-blue);
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            min-width: 120px;
+            z-index: 1000;
+            display: none;
+            margin-top: 5px;
+        }
+
+        .language-dropdown.active {
+            display: block;
+        }
+
+        .language-option {
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background 0.2s;
+        }
+
+        .language-option:hover {
+            background: var(--secondary-blue);
+            color: white;
+        }
+
+        /* Game Board */
+        #game-board {
+            display: grid;
+            justify-content: center;
+            margin: 25px 15px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .pot {
+            position: relative;
+            display: flex;
+            overflow: hidden;
+            align-items: center;
+            justify-content: center;
+            width: 90px;
+            height: 90px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid var(--soil-brown);
+            border-radius: 15px;
+            background: linear-gradient(145deg, var(--brown), #654321);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .pot:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .pot:hover .emoji {
+            color: #FFD700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+        }
+
+        .pot .emoji {
+            font-size: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .plant-icon-wrapper {
+            position: absolute;
+            z-index: 2;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .level-indicator {
+            font-size: 12px;
+            line-height: 1;
+            position: absolute;
+            text-align: center;
+        }
+
+        .water-level {
+            top: 4px;
+            left: 4px;
+        }
+
+        .food-level {
+            bottom: 4px;
+            left: 4px;
+        }
+
+        /* Tools and Seeds */
+        #tools, #seeds, #game-controls {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .tool, .seed, .control-btn {
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #4A7023;
+            border: 3px solid var(--soil-brown);
+            border-radius: 50%;
+            background: linear-gradient(145deg, var(--light-brown), #d4a574);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .tool.selected, .seed.selected {
+            border-color: var(--warning-yellow);
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.5);
+        }
+
+        .tool:hover, .seed:hover, .control-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Status */
+        #status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin: 15px 0;
+            padding: 10px 15px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        #score-wrapper {
+            font-weight: 700;
+            color: var(--success-green);
+            font-size: 1.1rem;
+        }
+
+        #weather {
+            font-weight: 600;
+            color: var(--secondary-blue);
+        }
+
+        #time-wrapper {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #4A7023;
+            padding: 8px 15px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            width: 400px;
+            max-width: 90%;
+            padding: 25px;
+            animation: modalSlideIn 0.4s ease-out;
+            text-align: center;
+            border-radius: 20px;
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--primary-green);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #aaa;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--error-red);
+        }
+
+        /* Countdown */
+        #countdown-overlay {
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6));
+            backdrop-filter: blur(10px);
+        }
+
+        #countdown {
+            font-size: 120px;
+            font-weight: 900;
+            color: var(--warning-yellow);
+            text-shadow: 0 0 30px rgba(234, 179, 8, 0.8);
+            animation: countdownPulse 1s infinite;
+        }
+
+        @keyframes countdownPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .pulse {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .cloud {
+            position: absolute;
+            z-index: -1;
+            font-size: 40px;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.7;
+        }
+
+        .cloud:nth-child(2n) {
+            animation-delay: -3s;
+        }
+
+        /* Special Effects */
+        .season-ending {
+            animation: seasonBlink 1s infinite;
+        }
+
+        @keyframes seasonBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .fa-utensil-spoon {
+            transform: rotate(180deg) scaleX(1);
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        /* Error Message */
+        .error-message {
+            background: var(--error-red);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            #game-container {
+                width: 98%;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            #game-board {
+                gap: 20px;
+                margin: 20px 10px;
+            }
+
+            .pot {
+                width: 75px;
+                height: 75px;
+            }
+
+            .pot .emoji {
+                font-size: 35px;
+            }
+
+            .tool, .seed, .control-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+
+            #countdown {
+                font-size: 100px;
+            }
+
+            .back-btn, .language-btn {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+        }
+    </style>
+</head>
+<body data-requires-auth="true" data-auth-redirect="../auth.html">
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div>
+            <div style="font-size: 3rem; margin-bottom: 20px;">🌾</div>
+            <div>Loading Virtual Farmery...</div>
+        </div>
+    </div>
+
+    <div id="game-container">
+        <!-- Error Message -->
+        <div class="error-message" id="errorMessage"></div>
+
+        <!-- Header with Back Button and Language Selector -->
+        <div class="game-header">
+            <a href="../dashboard.html" class="back-btn" data-translate="back-dashboard">
+                <i class="fas fa-arrow-left"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <h1 data-translate="game-title">🌾 Virtual Farmery</h1>
+
+            <div class="language-selector">
+                <button class="language-btn" id="languageBtn">
+                    <span id="currentLang">EN</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown" id="languageDropdown">
+                    <div class="language-option" data-lang="en">🇺🇸 English</div>
+                    <div class="language-option" data-lang="hi">🇮🇳 हिन्दी</div>
+                    <div class="language-option" data-lang="ml">🇮🇳 മലയാളം</div>
+                    <div class="language-option" data-lang="te">🇮🇳 తెలుగు</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Board -->
+        <div id="game-board">
+            <div class="pot" id="pot-0"></div>
+            <div class="pot" id="pot-1"></div>
+            <div class="pot" id="pot-2"></div>
+            <div class="pot" id="pot-3"></div>
+            <div class="pot" id="pot-4"></div>
+            <div class="pot" id="pot-5"></div>
+            <div class="pot" id="pot-6"></div>
+            <div class="pot" id="pot-7"></div>
+            <div class="pot" id="pot-8"></div>
+        </div>
+
+        <!-- Tools -->
+        <div id="tools">
+            <div class="tool tooltip" data-tooltip="Prepare soil" id="shovel">
+                <i class="fas fa-utensil-spoon"></i>
+            </div>
+            <div class="tool tooltip" data-tooltip="Water plants" id="wateringcan">
+                <i class="fas fa-tint"></i>
+            </div>
+            <div class="tool tooltip" data-tooltip="Add fertilizer" id="plantfood">
+                <i class="fas fa-leaf"></i>
+            </div>
+            <div class="tool tooltip" data-tooltip="Harvest crops" id="harvest">
+                <i class="fas fa-hand-sparkles"></i>
+            </div>
+        </div>
+
+        <!-- Seeds -->
+        <div id="seeds">
+            <div class="seed tooltip" data-tooltip="Cucumber: High water, low food" id="cucumber">🥒</div>
+            <div class="seed tooltip" data-tooltip="Tomato: Moderate water and food" id="tomato">🍅</div>
+            <div class="seed tooltip" data-tooltip="Pepper: Low water, high food" id="pepper">🌶️</div>
+            <div class="seed tooltip" data-tooltip="Pumpkin: High water, high food" id="pumpkin">🎃</div>
+        </div>
+
+        <!-- Status -->
+        <div id="status">
+            <div id="score-wrapper">
+                <span data-translate="harvest">Harvest:</span> <span id="score">0.00</span> kg
+            </div>
+            <div id="weather" class="tooltip" data-tooltip="Weather affects plant growth">
+                <span data-translate="sunny">Sunny</span> ☀️
+            </div>
+        </div>
+
+        <!-- Time -->
+        <div id="time-wrapper">
+            <span id="time" data-translate="spring-1">Spring Day 1</span>
+        </div>
+
+        <!-- Game Controls -->
+        <div id="game-controls">
+            <button class="control-btn tooltip" data-tooltip="Restart game" id="restart">
+                <i class="fas fa-redo-alt"></i>
+            </button>
+            <button class="control-btn tooltip" data-tooltip="Instructions" id="show-tutorial">
+                <i class="fas fa-question"></i>
+            </button>
+            <button class="control-btn tooltip" data-tooltip="Pause/Resume" id="pause">
+                <i class="fas fa-play"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Instructions Modal -->
+    <div class="modal" id="instructions-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" id="close-instructions-modal">&times;</span>
+            <h2 data-translate="how-to-play">🌾 How to Play Virtual Farmery</h2>
+            <ol id="instructions-list">
+                <li data-translate="instruction-1">Use the <strong>shovel</strong> to prepare soil for planting</li>
+                <li data-translate="instruction-2">Select a <strong>seed</strong> and plant it in prepared soil</li>
+                <li data-translate="instruction-3"><strong>Water</strong> your plants regularly to keep them healthy</li>
+                <li data-translate="instruction-4">Use <strong>fertilizer</strong> to boost growth and yield</li>
+                <li data-translate="instruction-5"><strong>Harvest</strong> crops when they're fully grown</li>
+                <li data-translate="instruction-6">Watch the <strong>weather</strong> - it affects plant growth!</li>
+            </ol>
+            <p data-translate="good-luck">Good luck, farmer! 🚜</p>
+        </div>
+    </div>
+
+    <!-- End Game Modal -->
+    <div class="modal" id="end-game-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" id="close-end-game-modal">&times;</span>
+            <h2 data-translate="season-end">🍂 Season's End</h2>
+            <p data-translate="season-complete">The growing season has come to an end!</p>
+            <p data-translate="total-harvest">Total harvest: <span id="final-score">0</span> kg</p>
+            <button class="control-btn" onclick="startGame()" style="margin-top: 15px;">
+                <i class="fas fa-play"></i> <span data-translate="play-again">Play Again</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="../js/backend-bridge.js" defer></script>
+    <script>
+        // Debug function to show errors
+        function showError(message) {
+            console.error('Virtual Farmery Error:', message);
+            const errorDiv = document.getElementById('errorMessage');
+            if (errorDiv) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Wrap everything in try-catch for debugging
+        try {
+            // Game Configuration
+            const GAME_CONFIG = {
+                NUM_POTS: 9,
+                SEASON_START: 1,
+                SEASON_END: 180,
+                DAYS_PER_SECOND: 1,
+                THROTTLE_INTERVAL: 1500,
+                PLANT_TYPES: {
+                    CUCUMBER: {
+                        waterNeed: 0.072, foodNeed: 0.024, growthRate: 0.05,
+                        yieldWeight: 0.3, icon: "🥒", stages: ["🌱", "🌿", "🥒"],
+                        growthTime: 25, maxWater: 7, maxFood: 2
+                    },
+                    TOMATO: {
+                        waterNeed: 0.06, foodNeed: 0.032, growthRate: 0.04,
+                        yieldWeight: 0.2, icon: "🍅", stages: ["🌱", "🌿", "🍅"],
+                        growthTime: 30, maxWater: 5, maxFood: 3
+                    },
+                    PEPPER: {
+                        waterNeed: 0.048, foodNeed: 0.04, growthRate: 0.03,
+                        yieldWeight: 0.1, icon: "🌶️", stages: ["🌱", "🌿", "🌶️"],
+                        growthTime: 35, maxWater: 4, maxFood: 4
+                    },
+                    PUMPKIN: {
+                        waterNeed: 0.066, foodNeed: 0.036, growthRate: 0.025,
+                        yieldWeight: 2, icon: "🎃", stages: ["🌱", "🌿", "🎃"],
+                        growthTime: 40, maxWater: 5, maxFood: 5
+                    }
+                },
+                WEATHER_EVENTS: [
+                    {name: "Sunny", icon: "☀️", effect: {water: -0.05, food: 0.02}},
+                    {name: "Rainy", icon: "🌧️", effect: {water: 0.05, food: -0.02}},
+                    {name: "Windy", icon: "💨", effect: {water: -0.03, food: -0.03}}
+                ],
+                MONTHS: ["April", "May", "June", "July", "August", "September"]
+            };
+
+            // Multi-language Support
+            const TRANSLATIONS = {
+                en: {
+                    'back-dashboard': 'Dashboard',
+                    'game-title': '🌾 Virtual Farmery',
+                    'harvest': 'Harvest:',
+                    'sunny': 'Sunny',
+                    'spring-1': 'Spring Day 1',
+                    'how-to-play': '🌾 How to Play Virtual Farmery',
+                    'instruction-1': 'Use the <strong>shovel</strong> to prepare soil for planting',
+                    'instruction-2': 'Select a <strong>seed</strong> and plant it in prepared soil',
+                    'instruction-3': '<strong>Water</strong> your plants regularly to keep them healthy',
+                    'instruction-4': 'Use <strong>fertilizer</strong> to boost growth and yield',
+                    'instruction-5': '<strong>Harvest</strong> crops when they\'re fully grown',
+                    'instruction-6': 'Watch the <strong>weather</strong> - it affects plant growth!',
+                    'good-luck': 'Good luck, farmer! 🚜',
+                    'season-end': '🍂 Season\'s End',
+                    'season-complete': 'The growing season has come to an end!',
+                    'total-harvest': 'Total harvest:',
+                    'play-again': 'Play Again'
+                },
+                hi: {
+                    'back-dashboard': 'डैशबोर्ड',
+                    'game-title': '🌾 वर्चुअल फार्मरी',
+                    'harvest': 'फसल:',
+                    'sunny': 'धूप',
+                    'good-luck': 'शुभकामनाएं, किसान! 🚜',
+                    'play-again': 'फिर खेलें'
+                },
+                ml: {
+                    'back-dashboard': 'ഡാഷ്ബോർഡ്',
+                    'game-title': '🌾 വെർച്വൽ ഫാർമറി',
+                    'harvest': 'വിളവെടുപ്പ്:',
+                    'sunny': 'വെയിലുള്ള',
+                    'good-luck': 'ഭാഗ്യം, കർഷകൻ! 🚜',
+                    'play-again': 'വീണ്ടും കളിക്കുക'
+                },
+                te: {
+                    'back-dashboard': 'డ్యాష్‌బోర్డ్',
+                    'game-title': '🌾 వర్చువల్ ఫార్మరీ',
+                    'harvest': 'పంట:',
+                    'sunny': 'ఎండ',
+                    'good-luck': 'అదృష్టం, రైతు! 🚜',
+                    'play-again': 'మళ్లీ ఆడు'
+                }
+            };
+
+            // Game State Management
+            class GameManager {
+                constructor() {
+                    console.log('🎮 Initializing Virtual Farmery Game...');
+                    this.currentLanguage = localStorage.getItem('farmeryLanguage') || 'en';
+                    this.gameState = this.initializeGameState();
+                    this.isRunning = false;
+                    this.gameLoopId = null;
+                    
+                    this.setupEventListeners();
+                    this.setupLanguage();
+                    console.log('✅ Game Manager initialized successfully');
+                }
+
+                initializeGameState() {
+                    return {
+                        score: 0,
+                        day: GAME_CONFIG.SEASON_START,
+                        pots: Array(GAME_CONFIG.NUM_POTS).fill(null).map(() => ({
+                            plant: null, soil: 0, water: 0, food: 0, previousState: {}
+                        })),
+                        selectedTool: null,
+                        selectedSeed: null,
+                        currentWeather: GAME_CONFIG.WEATHER_EVENTS[0],
+                        weatherDuration: 10000,
+                        paused: true,
+                        lastUpdate: 0
+                    };
+                }
+
+                setupLanguage() {
+                    document.body.className = `lang-${this.currentLanguage}`;
+                    this.updateLanguageDisplay();
+                    this.applyTranslations();
+                }
+
+                updateLanguageDisplay() {
+                    const langCodes = { en: 'EN', hi: 'HI', ml: 'ML', te: 'TE' };
+                    const currentLangElement = document.getElementById('currentLang');
+                    if (currentLangElement) {
+                        currentLangElement.textContent = langCodes[this.currentLanguage];
+                    }
+                }
+
+                applyTranslations() {
+                    const currentTranslations = TRANSLATIONS[this.currentLanguage] || TRANSLATIONS.en;
+                    document.querySelectorAll('[data-translate]').forEach(element => {
+                        const key = element.dataset.translate;
+                        if (currentTranslations[key]) {
+                            element.innerHTML = currentTranslations[key];
+                        }
+                    });
+                }
+
+                changeLanguage(lang) {
+                    this.currentLanguage = lang;
+                    localStorage.setItem('farmeryLanguage', lang);
+                    this.setupLanguage();
+                }
+
+                setupEventListeners() {
+                    // Language selector
+                    const languageBtn = document.getElementById('languageBtn');
+                    const languageDropdown = document.getElementById('languageDropdown');
+
+                    if (languageBtn) {
+                        languageBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            if (languageDropdown) {
+                                languageDropdown.classList.toggle('active');
+                            }
+                        });
+                    }
+
+                    document.addEventListener('click', () => {
+                        if (languageDropdown) {
+                            languageDropdown.classList.remove('active');
+                        }
+                    });
+
+                    document.querySelectorAll('.language-option').forEach(option => {
+                        option.addEventListener('click', (e) => {
+                            const lang = e.target.dataset.lang;
+                            if (lang) {
+                                this.changeLanguage(lang);
+                                if (languageDropdown) {
+                                    languageDropdown.classList.remove('active');
+                                }
+                            }
+                        });
+                    });
+
+                    // Game controls
+                    const restartBtn = document.getElementById('restart');
+                    const pauseBtn = document.getElementById('pause');
+                    const tutorialBtn = document.getElementById('show-tutorial');
+
+                    if (restartBtn) restartBtn.addEventListener('click', () => this.startGame());
+                    if (pauseBtn) pauseBtn.addEventListener('click', () => this.togglePause());
+                    if (tutorialBtn) tutorialBtn.addEventListener('click', () => this.showInstructions());
+
+                    // Tools and seeds
+                    document.querySelectorAll('.tool').forEach(tool => {
+                        tool.addEventListener('click', () => this.selectTool(tool.id));
+                    });
+
+                    document.querySelectorAll('.seed').forEach(seed => {
+                        seed.addEventListener('click', () => this.selectSeed(seed.id));
+                    });
+
+                    // Pots
+                    document.querySelectorAll('.pot').forEach((pot, index) => {
+                        pot.addEventListener('click', () => this.interactWithPot(index));
+                    });
+
+                    // Modal controls
+                    const closeInstructionsBtn = document.getElementById('close-instructions-modal');
+                    const closeEndGameBtn = document.getElementById('close-end-game-modal');
+
+                    if (closeInstructionsBtn) {
+                        closeInstructionsBtn.addEventListener('click', () => {
+                            const modal = document.getElementById('instructions-modal');
+                            if (modal) {
+                                modal.style.display = 'none';
+                                if (this.gameState.paused) this.startCountdown();
+                            }
+                        });
+                    }
+
+                    if (closeEndGameBtn) {
+                        closeEndGameBtn.addEventListener('click', () => {
+                            const modal = document.getElementById('end-game-modal');
+                            if (modal) {
+                                modal.style.display = 'none';
+                            }
+                        });
+                    }
+                }
+
+                selectTool(toolId) {
+                    this.gameState.selectedTool = toolId;
+                    this.gameState.selectedSeed = null;
+                    this.updateUISelection();
+                    this.playSound('click');
+                }
+
+                selectSeed(seedId) {
+                    this.gameState.selectedSeed = seedId.toUpperCase();
+                    this.gameState.selectedTool = null;
+                    this.updateUISelection();
+                    this.playSound('click');
+                }
+
+                updateUISelection() {
+                    document.querySelectorAll('.tool').forEach(tool => {
+                        tool.classList.toggle('selected', tool.id === this.gameState.selectedTool);
+                    });
+                    document.querySelectorAll('.seed').forEach(seed => {
+                        seed.classList.toggle('selected', seed.id.toUpperCase() === this.gameState.selectedSeed);
+                    });
+                }
+
+                interactWithPot(potIndex) {
+                    if (this.gameState.paused) return;
+
+                    const pot = this.gameState.pots[potIndex];
+                    const actions = {
+                        shovel: () => this.prepareSoil(pot, potIndex),
+                        wateringcan: () => this.waterPlant(pot, potIndex),
+                        plantfood: () => this.feedPlant(pot, potIndex),
+                        harvest: () => this.harvestPlant(pot, potIndex),
+                        seed: () => this.plantSeed(pot, potIndex)
+                    };
+
+                    if (this.gameState.selectedTool) {
+                        actions[this.gameState.selectedTool]?.();
+                    } else if (this.gameState.selectedSeed) {
+                        actions.seed();
+                    }
+                }
+
+                prepareSoil(pot, potIndex) {
+                    if (pot.plant === null || pot.plant.growth >= 1 || pot.plant.dead) {
+                        pot.soil = 1;
+                        pot.plant = null;
+                        pot.water = 0;
+                        pot.food = 0;
+                        this.updatePotVisual(potIndex);
+                        this.playSound('plant');
+                    }
+                }
+
+                waterPlant(pot, potIndex) {
+                    if (pot.plant && !pot.plant.dead) {
+                        pot.water = Math.min(pot.water + 0.5, 1);
+                        this.updatePotVisual(potIndex);
+                        this.playSound('water');
+                    }
+                }
+
+                feedPlant(pot, potIndex) {
+                    if (pot.plant && !pot.plant.dead) {
+                        pot.food = Math.min(pot.food + 0.5, 1);
+                        this.updatePotVisual(potIndex);
+                        this.playSound('food');
+                    }
+                }
+
+                harvestPlant(pot, potIndex) {
+                    if (pot.plant && pot.plant.growth >= 1 && !pot.plant.dead) {
+                        const plantType = GAME_CONFIG.PLANT_TYPES[pot.plant.type];
+                        this.gameState.score += plantType.yieldWeight;
+                        
+                        pot.plant = null;
+                        pot.soil = 0;
+                        this.updatePotVisual(potIndex);
+                        this.playSound('harvest');
+                        
+                        // Save to localStorage
+                        this.saveToDashboard();
+                    }
+                }
+
+                plantSeed(pot, potIndex) {
+                    if (this.gameState.selectedSeed && pot.soil === 1 && !pot.plant) {
+                        pot.plant = {
+                            type: this.gameState.selectedSeed,
+                            growth: 0,
+                            dead: false
+                        };
+                        pot.water = 0.5;
+                        pot.food = 0.5;
+                        this.updatePotVisual(potIndex);
+                        this.playSound('plant');
+                    }
+                }
+
+                saveToDashboard() {
+                    try {
+                        const gameStats = {
+                            totalHarvest: this.gameState.score,
+                            lastPlayed: new Date().toISOString(),
+                            gamesCompleted: (parseInt(localStorage.getItem('farmeryGamesCompleted')) || 0) + 1,
+                            bestScore: Math.max(this.gameState.score, parseFloat(localStorage.getItem('farmeryBestScore')) || 0)
+                        };
+
+                        localStorage.setItem('farmeryStats', JSON.stringify(gameStats));
+                        localStorage.setItem('farmeryGamesCompleted', gameStats.gamesCompleted);
+                        localStorage.setItem('farmeryBestScore', gameStats.bestScore);
+
+                        if (window.backendBridge) {
+                            window.backendBridge.saveGameResult({
+                                game: 'virtual-farmery',
+                                score: this.gameState.score,
+                                completed: true,
+                                won: this.gameState.score > 0,
+                                accuracy: 100
+                            }).then(() => window.backendBridge.syncCurrentUserToStorage())
+                              .catch((error) => console.warn('Failed to sync Virtual Farmery stats:', error.message));
+                        }
+                    } catch (error) {
+                        console.warn('Failed to save game stats:', error);
+                    }
+                }
+
+                updatePotVisual(potIndex) {
+                    const pot = this.gameState.pots[potIndex];
+                    const potElement = document.getElementById(`pot-${potIndex}`);
+                    
+                    if (!potElement) return;
+
+                    potElement.innerHTML = "";
+
+                    if (pot.plant) {
+                        const plantType = GAME_CONFIG.PLANT_TYPES[pot.plant.type];
+                        const growthStage = Math.min(Math.floor(pot.plant.growth * 3), 2);
+                        const plantIcon = pot.plant.dead ? "💀" : plantType.stages[growthStage];
+
+                        const plantWrapper = document.createElement("div");
+                        plantWrapper.className = "plant-icon-wrapper";
+                        
+                        const plantElement = document.createElement("span");
+                        plantElement.className = "emoji plant-icon";
+                        plantElement.textContent = plantIcon;
+
+                        if (pot.plant.growth >= 1 && !pot.plant.dead) {
+                            plantWrapper.classList.add("pulse");
+                            this.playSound('ripe');
+                        }
+
+                        plantWrapper.appendChild(plantElement);
+                        potElement.appendChild(plantWrapper);
+
+                        if (pot.plant.growth < 1 && !pot.plant.dead) {
+                            const resourceContainer = document.createElement("div");
+                            resourceContainer.className = "resource-container";
+
+                            const waterLevel = document.createElement("div");
+                            waterLevel.className = "level-indicator water-level";
+                            waterLevel.textContent = "💧".repeat(Math.ceil(pot.water * plantType.maxWater));
+
+                            const foodLevel = document.createElement("div");
+                            foodLevel.className = "level-indicator food-level";
+                            foodLevel.textContent = "🍃".repeat(Math.ceil(pot.food * plantType.maxFood));
+
+                            resourceContainer.appendChild(waterLevel);
+                            resourceContainer.appendChild(foodLevel);
+                            potElement.appendChild(resourceContainer);
+                        }
+                    } else if (pot.soil) {
+                        potElement.innerHTML = "<span class='emoji'>🕳</span>";
+                    }
+                }
+
+                playSound(soundType) {
+                    // Since audio files might not exist, we'll use a simple beep or visual feedback instead
+                    try {
+                        const audio = document.getElementById(`${soundType}-sound`);
+                        if (audio) {
+                            audio.currentTime = 0;
+                            audio.play().catch(() => {
+                                // Audio playback failed - silent fail
+                                console.log(`Audio ${soundType} not available`);
+                            });
+                        }
+                    } catch (error) {
+                        // Silent fail for audio errors
+                        console.log(`Audio error for ${soundType}:`, error.message);
+                    }
+                }
+
+                startGame() {
+                    console.log('🚀 Starting new game...');
+                    this.gameState = this.initializeGameState();
+                    
+                    const instructionsModal = document.getElementById('instructions-modal');
+                    const endGameModal = document.getElementById('end-game-modal');
+                    const pauseBtn = document.getElementById('pause');
+                    
+                    if (instructionsModal) instructionsModal.style.display = 'flex';
+                    if (endGameModal) endGameModal.style.display = 'none';
+                    if (pauseBtn) pauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    
+                    this.updateUI();
+                    this.updateUISelection();
+                    this.gameState.pots.forEach((_, index) => this.updatePotVisual(index));
+                }
+
+                showInstructions() {
+                    const modal = document.getElementById('instructions-modal');
+                    if (modal) {
+                        modal.style.display = 'flex';
+                        this.gameState.paused = true;
+                        const pauseBtn = document.getElementById('pause');
+                        if (pauseBtn) pauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    }
+                }
+
+                startCountdown() {
+                    const overlay = document.createElement('div');
+                    overlay.id = 'countdown-overlay';
+                    document.body.appendChild(overlay);
+
+                    const countdown = document.createElement('div');
+                    countdown.id = 'countdown';
+                    overlay.appendChild(countdown);
+
+                    let count = 3;
+                    const interval = setInterval(() => {
+                        if (count > 0) {
+                            countdown.textContent = count;
+                            count--;
+                        } else if (count === 0) {
+                            countdown.textContent = 'GROW!';
+                            count--;
+                        } else {
+                            clearInterval(interval);
+                            document.body.removeChild(overlay);
+                            this.gameState.paused = false;
+                            const pauseBtn = document.getElementById('pause');
+                            if (pauseBtn) pauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                            this.startGameLoop();
+                        }
+                    }, 1000);
+                }
+
+                togglePause() {
+                    this.gameState.paused = !this.gameState.paused;
+                    const pauseBtn = document.getElementById('pause');
+                    if (pauseBtn) {
+                        pauseBtn.innerHTML = this.gameState.paused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>';
+                    }
+                    
+                    if (!this.gameState.paused) {
+                        this.startGameLoop();
+                    }
+                }
+
+                startGameLoop() {
+                    if (this.gameLoopId) {
+                        cancelAnimationFrame(this.gameLoopId);
+                    }
+                    this.gameState.lastUpdate = performance.now();
+                    this.gameLoop();
+                }
+
+                gameLoop() {
+                    if (this.gameState.paused) return;
+
+                    const now = performance.now();
+                    const deltaTime = now - this.gameState.lastUpdate;
+                    this.gameState.lastUpdate = now;
+
+                    this.updatePlants(deltaTime);
+                    this.updateWeather(deltaTime);
+                    this.updateDay(deltaTime);
+                    this.updateUI();
+
+                    if (this.gameState.day <= GAME_CONFIG.SEASON_END) {
+                        this.gameLoopId = requestAnimationFrame(() => this.gameLoop());
+                    } else {
+                        this.endGame();
+                    }
+                }
+
+                updatePlants(deltaTime) {
+                    const secondsPassed = deltaTime / 1000;
+                    
+                    this.gameState.pots.forEach((pot, index) => {
+                        if (pot.plant && !pot.plant.dead && pot.plant.growth < 1) {
+                            const plantType = GAME_CONFIG.PLANT_TYPES[pot.plant.type];
+                            
+                            // Apply weather effects
+                            pot.water = Math.max(0, Math.min(1, 
+                                pot.water + this.gameState.currentWeather.effect.water * secondsPassed - plantType.waterNeed * secondsPassed
+                            ));
+                            pot.food = Math.max(0, Math.min(1, 
+                                pot.food + this.gameState.currentWeather.effect.food * secondsPassed - plantType.foodNeed * secondsPassed
+                            ));
+
+                            // Check plant health
+                            if (pot.water > 0 && pot.food > 0) {
+                                pot.plant.growth += plantType.growthRate * secondsPassed;
+                                pot.plant.growth = Math.min(pot.plant.growth, 1);
+                            } else {
+                                pot.plant.dead = true;
+                                this.playSound('dead');
+                            }
+                            
+                            this.updatePotVisual(index);
+                        }
+                    });
+                }
+
+                updateWeather(deltaTime) {
+                    this.gameState.weatherDuration -= deltaTime;
+                    if (this.gameState.weatherDuration <= 0) {
+                        this.gameState.currentWeather = GAME_CONFIG.WEATHER_EVENTS[
+                            Math.floor(Math.random() * GAME_CONFIG.WEATHER_EVENTS.length)
+                        ];
+                        this.gameState.weatherDuration = Math.random() * 20000 + 10000;
+                    }
+                }
+
+                updateDay(deltaTime) {
+                    this.gameState.day += (deltaTime / 1000) * GAME_CONFIG.DAYS_PER_SECOND;
+                }
+
+                updateUI() {
+                    const scoreElement = document.getElementById('score');
+                    const timeElement = document.getElementById('time');
+                    const weatherElement = document.getElementById('weather');
+                    
+                    if (scoreElement) {
+                        scoreElement.textContent = this.gameState.score.toFixed(2);
+                    }
+                    
+                    if (timeElement) {
+                        const monthIndex = Math.floor((this.gameState.day - 1) / 30);
+                        const dayOfMonth = Math.floor(this.gameState.day - monthIndex * 30);
+                        const month = GAME_CONFIG.MONTHS[monthIndex] || 'September';
+                        
+                        timeElement.textContent = `${month} Day ${dayOfMonth}`;
+                        timeElement.classList.toggle('season-ending', month === 'September');
+                    }
+                    
+                    if (weatherElement) {
+                        weatherElement.innerHTML = `${this.gameState.currentWeather.name} ${this.gameState.currentWeather.icon}`;
+                    }
+                }
+
+                endGame() {
+                    this.gameState.paused = true;
+                    
+                    const finalScoreElement = document.getElementById('final-score');
+                    const endGameModal = document.getElementById('end-game-modal');
+                    
+                    if (finalScoreElement) {
+                        finalScoreElement.textContent = this.gameState.score.toFixed(2);
+                    }
+                    
+                    if (endGameModal) {
+                        endGameModal.style.display = 'flex';
+                    }
+                    
+                    this.saveToDashboard();
+                    console.log('🏁 Game ended with score:', this.gameState.score);
+                }
+            }
+
+            // Initialize Game
+            let gameManager;
+
+            // Hide loading screen and start game
+            function initializeGame() {
+                console.log('🎮 Initializing game...');
+                
+                // Hide loading screen
+                const loadingScreen = document.getElementById('loadingScreen');
+                if (loadingScreen) {
+                    setTimeout(() => {
+                        loadingScreen.classList.add('hidden');
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                        }, 500);
+                    }, 1000);
+                }
+
+                // Initialize game manager
+                gameManager = new GameManager();
+                gameManager.startGame();
+                
+                console.log('✅ Game initialized successfully!');
+            }
+
+            // Global functions for inline event handlers
+            window.startGame = function() {
+                if (gameManager) {
+                    gameManager.startGame();
+                }
+            };
+
+            // Initialize when DOM is loaded
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('📄 DOM loaded, initializing game...');
+                initializeGame();
+            });
+
+        } catch (error) {
+            console.error('❌ Critical error in Virtual Farmery:', error);
+            showError('Failed to initialize game: ' + error.message);
+        }
+    </script>
+</body>
+</html>

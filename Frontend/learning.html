@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-translate="page-title">Krishi Setu - Learning Hub</title>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@300;400;500;600;700&family=Noto+Sans+Malayalam:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Learning CSS -->
+    <link rel="stylesheet" href="css/learning.css">
+    
+    <!-- Text-to-Speech -->
+    <script src="text-to-speech.js" defer></script>
+</head>
+<body data-requires-auth="true" data-auth-redirect="auth.html">
+    <a href="#categories-section" class="skip-link">Skip to main content</a>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2 data-translate="loading">Loading Learning Hub...</h2>
+            <p data-translate="loading-subtitle">Preparing your educational content</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="learning-header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="dashboard.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    <span data-translate="back-dashboard">Back to Dashboard</span>
+                </a>
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1 data-translate="learning-hub">Krishi Setu Learning Hub</h1>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <!-- Language Selector -->
+                <div class="language-selector">
+                    <button type="button" class="language-btn" id="language-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="language-dropdown" aria-label="Change language">
+                        <i class="fas fa-globe"></i>
+                        <span id="current-language">EN</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="language-dropdown" id="language-dropdown" role="listbox" aria-label="Language options">
+                        <div class="language-option" data-lang="en" role="option" tabindex="0">🇺🇸 English</div>
+                        <div class="language-option" data-lang="hi" role="option" tabindex="0">🇮🇳 हिन्दी</div>
+                        <div class="language-option" data-lang="ml" role="option" tabindex="0">🇮🇳 മലയാളം</div>
+                        <div class="language-option" data-lang="te" role="option" tabindex="0">🇮🇳 తెలుగు</div>
+                    </div>
+                </div>
+                
+                <!-- User Profile -->
+                <div class="user-profile" id="user-profile">
+                    <img src="objects/cute-hamster-pictures-v40l43qg8o7pwdtp.webp" alt="User profile avatar" class="user-avatar">
+                    <div class="user-info">
+                        <span class="user-name">Rakesh Gupta</span>
+                        <span class="user-level" data-translate="level">Level 5</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="learning-main">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h2 data-translate="hero-title">Master Sustainable Farming</h2>
+                <p data-translate="hero-subtitle">Learn from expert farmers and agricultural scientists through comprehensive video tutorials</p>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="stat-number">150+</div>
+                        <div class="stat-label" data-translate="video-lessons">Video Lessons</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="stat-number">25k+</div>
+                        <div class="stat-label" data-translate="learners">Learners</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="stat-number">4.8★</div>
+                        <div class="stat-label" data-translate="rating">Rating</div>
+                    </div>
+                </div>
+                <button type="button" class="hero-cta-btn" onclick="learningHub.scrollToCategories()">
+                    <i class="fas fa-play"></i>
+                    <span data-translate="start-learning">Start Learning Now</span>
+                </button>
+            </div>
+            <div class="hero-image">
+                <div class="hero-video-preview">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/KOleUb6djXQ?si=NeUs2vltolsYo3r8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <div class="video-overlay">
+                        <button type="button" class="play-overlay-btn" onclick="learningHub.playFeaturedVideo()" aria-label="Play featured learning video">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search and Filter Section -->
+        <section class="search-section">
+            <div class="search-container">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="video-search" data-translate-placeholder="search-videos" placeholder="Search for farming topics, techniques, or crops..." aria-label="Search videos">
+                </div>
+                <div class="filter-buttons">
+                    <button type="button" class="filter-btn active" data-filter="all" data-translate="all-videos" aria-pressed="true">All Videos</button>
+                    <button type="button" class="filter-btn" data-filter="beginner" data-translate="beginner" aria-pressed="false">Beginner</button>
+                    <button type="button" class="filter-btn" data-filter="intermediate" data-translate="intermediate" aria-pressed="false">Intermediate</button>
+                    <button type="button" class="filter-btn" data-filter="advanced" data-translate="advanced" aria-pressed="false">Advanced</button>
+                    <button type="button" class="filter-btn" data-filter="trending" data-translate="trending" aria-pressed="false">Trending</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning Categories -->
+        <section class="categories-section" id="categories-section">
+            <div class="section-header">
+                <h2 data-translate="learning-categories">Learning Categories</h2>
+                <p data-translate="categories-subtitle">Explore different aspects of sustainable farming</p>
+            </div>
+
+            <div class="categories-grid">
+                <!-- Sustainable Farming Basics -->
+                <div class="category-card" data-category="basics">
+                    <div class="category-header">
+                        <div class="category-icon">🌱</div>
+                        <div class="category-info">
+                            <h3 data-translate="farming-basics">Sustainable Farming Basics</h3>
+                            <span class="video-count">25 videos</span>
+                        </div>
+                    </div>
+                    <p data-translate="basics-desc">Learn the fundamentals of sustainable agriculture and organic farming methods</p>
+                    <div class="category-progress">
+                        <div class="progress-bar" style="width: 60%"></div>
+                        <span>60% Complete</span>
+                    </div>
+                </div>
+
+                <!-- Crop Management -->
+                <div class="category-card" data-category="crops">
+                    <div class="category-header">
+                        <div class="category-icon">🌾</div>
+                        <div class="category-info">
+                            <h3 data-translate="crop-management">Crop Management</h3>
+                            <span class="video-count">35 videos</span>
+                        </div>
+                    </div>
+                    <p data-translate="crops-desc">Master crop rotation, planting techniques, and harvest optimization</p>
+                    <div class="category-progress">
+                        <div class="progress-bar" style="width: 40%"></div>
+                        <span>40% Complete</span>
+                    </div>
+                </div>
+
+                <!-- Organic Pest Control -->
+                <div class="category-card" data-category="pest-control">
+                    <div class="category-header">
+                        <div class="category-icon">🐛</div>
+                        <div class="category-info">
+                            <h3 data-translate="pest-control">Organic Pest Control</h3>
+                            <span class="video-count">20 videos</span>
+                        </div>
+                    </div>
+                    <p data-translate="pest-desc">Natural methods to protect crops without harmful chemicals</p>
+                    <div class="category-progress">
+                        <div class="progress-bar" style="width: 75%"></div>
+                        <span>75% Complete</span>
+                    </div>
+                </div>
+
+                <!-- Soil Health -->
+                <div class="category-card" data-category="soil">
+                    <div class="category-header">
+                        <div class="category-icon">🌍</div>
+                        <div class="category-info">
+                            <h3 data-translate="soil-health">Soil Health & Nutrition</h3>
+                            <span class="video-count">28 videos</span>
+                        </div>
+                    </div>
+                    <p data-translate="soil-desc">Understanding soil composition, testing, and natural fertilization</p>
+                    <div class="category-progress">
+                        <div class="progress-bar" style="width: 30%"></div>
+                        <span>30% Complete</span>
+                    </div>
+                </div>
+
+                <!-- Water Management -->
+                <div class="category-card" data-category="water">
+                    <div class="category-header">
+                        <div class="category-icon">💧</div>
+                        <div class="category-info">
+                            <h3 data-translate="water-management">Water Management</h3>
+                            <span class="video-count">22 videos</span>
+                        </div>
+                    </div>
+                    <p data-translate="water-desc">Efficient irrigation systems and water conservation techniques</p>
+                    <div class="category-progress">
+                        <div class="progress-bar" style="width: 55%"></div>
+                        <span>55% Complete</span>
+                    </div>
+                </div>
+
+                <!-- Farm Technology -->
+                <div class="category-card" data-category="technology">
+                    <div class="category-header">
+                        <div class="category-icon">🚜</div>
+                        <div class="category-info">
+                            <h3 data-translate="farm-technology">Modern Farm Technology</h3>
+                            <span class="video-count">18 videos</span>
+                        </div>
+                    </div>
+                    <p data-translate="tech-desc">Smart farming tools, sensors, and automation for better yields</p>
+                    <div class="category-progress">
+                        <div class="progress-bar" style="width: 20%"></div>
+                        <span>20% Complete</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Videos Section -->
+        <section class="featured-videos-section">
+            <div class="section-header">
+                <h2 data-translate="featured-videos">Featured Learning Videos</h2>
+                <p data-translate="featured-subtitle">Hand-picked content from farming experts</p>
+            </div>
+
+            <div class="videos-grid" id="videos-grid">
+                <!-- Videos will be populated by JavaScript -->
+            </div>
+
+            <div class="load-more-container">
+                <button class="load-more-btn" id="load-more-btn" onclick="learningHub.loadMoreVideos()">
+                    <i class="fas fa-plus"></i>
+                    <span data-translate="load-more">Load More Videos</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Learning Progress Section -->
+        <section class="progress-section">
+            <div class="section-header">
+                <h2 data-translate="your-progress">Your Learning Progress</h2>
+                <p data-translate="progress-subtitle">Track your farming education journey</p>
+            </div>
+
+            <div class="progress-dashboard">
+                <div class="progress-stats">
+                    <div class="progress-stat">
+                        <div class="stat-icon">📺</div>
+                        <div class="stat-content">
+                            <h3 id="videos-watched">24</h3>
+                            <p data-translate="videos-watched">Videos Watched</p>
+                        </div>
+                    </div>
+                    <div class="progress-stat">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-content">
+                            <h3 id="learning-time">12.5h</h3>
+                            <p data-translate="learning-time">Learning Time</p>
+                        </div>
+                    </div>
+                    <div class="progress-stat">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-content">
+                            <h3 id="certificates">3</h3>
+                            <p data-translate="certificates">Certificates</p>
+                        </div>
+                    </div>
+                    <div class="progress-stat">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-content">
+                            <h3 id="skill-level">65%</h3>
+                            <p data-translate="skill-level">Skill Level</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3 data-translate="recent-learning">Recent Learning Activity</h3>
+                    <div class="activity-list" id="learning-activity">
+                        <!-- Activities populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Expert Instructors -->
+        <section class="instructors-section">
+            <div class="section-header">
+                <h2 data-translate="expert-instructors">Learn from Expert Farmers</h2>
+                <p data-translate="instructors-subtitle">Experienced agricultural professionals sharing their knowledge</p>
+            </div>
+
+            <div class="instructors-grid">
+                <div class="instructor-card">
+                    <div class="instructor-avatar">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" alt="Dr. Rajesh Kumar">
+                    </div>
+                    <div class="instructor-info">
+                        <h3>Dr. Rajesh Kumar</h3>
+                        <p data-translate="agricultural-scientist">Agricultural Scientist</p>
+                        <div class="instructor-stats">
+                            <span><i class="fas fa-video"></i> 45 courses</span>
+                            <span><i class="fas fa-users"></i> 12k students</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="instructor-card">
+                    <div class="instructor-avatar">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=150&h=150&fit=crop&crop=face" alt="Priya Sharma">
+                    </div>
+                    <div class="instructor-info">
+                        <h3>Priya Sharma</h3>
+                        <p data-translate="organic-expert">Organic Farming Expert</p>
+                        <div class="instructor-stats">
+                            <span><i class="fas fa-video"></i> 32 courses</span>
+                            <span><i class="fas fa-users"></i> 8.5k students</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="instructor-card">
+                    <div class="instructor-avatar">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face" alt="Amit Patel">
+                    </div>
+                    <div class="instructor-info">
+                        <h3>Amit Patel</h3>
+                        <p data-translate="sustainable-farmer">Sustainable Farming Pioneer</p>
+                        <div class="instructor-stats">
+                            <span><i class="fas fa-video"></i> 28 courses</span>
+                            <span><i class="fas fa-users"></i> 15k students</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="learning-footer">
+        <div class="footer-content">
+            <p data-translate="footer-text">&copy; 2025 Krishi Setu Learning Hub. Empowering farmers through education.</p>
+            <div class="footer-links">
+                <a href="dashboard.html" data-translate="dashboard">Dashboard</a>
+                <a href="about.html" data-translate="about">About</a>
+                <a href="contact.html" data-translate="contact">Contact</a>
+                <a href="help.html" data-translate="help">Help</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="modal">
+        <div class="modal-content video-modal-content">
+            <span class="close" id="video-close">&times;</span>
+            <div class="video-container" id="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/KOleUb6djXQ?si=NeUs2vltolsYo3r8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <div class="video-info" id="video-info">
+                <!-- Video information will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/backend-bridge.js" defer></script>
+    <script src="js/learning.js" defer></script>
+    <script src="voice-assistant.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "gamified-plat-workspace",
+  "private": true,
+  "scripts": {
+    "start": "npm --prefix Frontend run start",
+    "start:localhost": "npm --prefix Frontend run start:localhost",
+    "start:client": "npm --prefix Frontend run start:client",
+    "start:server": "npm --prefix Frontend run start:server",
+    "dev:server": "npm --prefix Frontend run dev:server",
+    "backend": "npm --prefix Frontend run backend:start",
+    "backend:dev": "npm --prefix Frontend run backend:dev",
+    "backend:health": "npm --prefix Frontend run backend:health",
+    "admin:hash": "npm --prefix Frontend run admin:hash"
+  }
+}

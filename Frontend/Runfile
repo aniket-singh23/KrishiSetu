@@ -1,0 +1,40 @@
+Backend setup and run:
+
+1) Install dependencies (from workspace root):
+npm --prefix Frontend install
+
+2) Configure environment (file already exists):
+Frontend/server/.env
+
+Required keys:
+PORT=3001
+JWT_SECRET=<long-random-secret>
+ADMIN_ID=admin
+ADMIN_PASSWORD_HASH=<bcrypt-hash>
+
+3) Generate admin password hash:
+npm --prefix Frontend run admin:hash -- yourAdminPassword
+
+4) Start backend only:
+npm --prefix Frontend run backend:start
+
+5) Backend health check:
+npm --prefix Frontend run backend:health
+
+6) Start full stack (backend + frontend):
+npm start
+
+Backend routes:
+
+1) GET /api/health
+2) GET /api/auth/check-email?email=<email>
+3) POST /api/auth/register
+4) POST /api/auth/login
+5) POST /api/auth/admin/login
+6) GET /api/me (Bearer token required)
+7) POST /api/stats/game (Bearer token required)
+
+Important:
+
+1) This project backend is Node.js/Express, not Python.
+2) Do not run python app.py for backend in this repo.

@@ -1,0 +1,28 @@
+{
+  "name": "krishi-setu",
+  "private": true,
+  "scripts": {
+    "start": "npm run start:localhost",
+    "start:client": "http-server . -p 5500 -c-1",
+    "start:server": "node server/index.js",
+    "backend:start": "node server/index.js",
+    "dev:server": "node --watch server/index.js",
+    "backend:dev": "node --watch server/index.js",
+    "backend:health": "node -e \"const u='http://127.0.0.1:3001/api/health';fetch(u).then(async r=>{const t=await r.text();if(!r.ok){console.error('Health check failed:',r.status,r.statusText,t);process.exit(1);}console.log('Health OK:',r.status,t);}).catch(e=>{console.error('Cannot reach backend at '+u+'. Start it with: npm run backend');console.error('Error:',e.cause?.code||e.code||e.message);process.exit(1);});\"",
+    "admin:hash": "node -e \"const bcrypt=require('bcryptjs'); const pwd=process.argv[1] || 'admin12345'; console.log(bcrypt.hashSync(pwd, 10));\"",
+    "prestart:localhost": "kill-port 3001 5500",
+    "start:localhost": "concurrently \"npm run start:server\" \"npm run start:client\""
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "http-server": "^14.1.1",
+    "kill-port": "^2.0.1"
+  }
+}
